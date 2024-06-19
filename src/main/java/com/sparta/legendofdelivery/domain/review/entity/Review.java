@@ -35,7 +35,7 @@ public class Review extends Timestamped {
 //  @JoinColumn(name = "store_id")
 //  private Store store;
 
-//  @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
+//  @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
 //  private List<Like> likeList = new ArrayList<>();
 
 }
