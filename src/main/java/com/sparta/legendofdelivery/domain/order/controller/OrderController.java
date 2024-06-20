@@ -18,6 +18,7 @@ public class OrderController {
 
     @PostMapping("/orders")
     public OrderResponseDto createOrder(@RequestBody OrderRequestDto requestDto) {
+        return null;
     }
 
 }

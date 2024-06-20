@@ -22,9 +22,9 @@ public class Order extends Timestamped {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "store_id")
-    private Store store;
+//    @ManyToOne
+//    @JoinColumn(name = "store_id")
+//    private Store store;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
