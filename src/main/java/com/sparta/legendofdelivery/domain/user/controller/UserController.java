@@ -1,5 +1,6 @@
 package com.sparta.legendofdelivery.domain.user.controller;
 
+import com.sparta.legendofdelivery.domain.user.dto.UserLoginRequestDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -26,9 +27,22 @@ public class UserController {
 
         userService.signup(requestDto);
 
-        MessageResponse response = new MessageResponse(201, "회원가입에 성공했습니다.");
+        return createResponseEntity(HttpStatus.CREATED, "회원가입에 성공했습니다.");
+    }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    @PostMapping("/login")
+    public ResponseEntity<MessageResponse> login(@Valid @RequestBody UserLoginRequestDto requestDto) {
+
+        userService.login(requestDto);
+
+        return createResponseEntity(HttpStatus.OK, "로그인에 성공했습니다.");
+    }
+
+    private ResponseEntity<MessageResponse> createResponseEntity(HttpStatus httpStatusCode, String message) {
+
+        MessageResponse response = new MessageResponse(httpStatusCode.value(), message);
+
+        return ResponseEntity.status(httpStatusCode).body(response);
     }
 
 }
