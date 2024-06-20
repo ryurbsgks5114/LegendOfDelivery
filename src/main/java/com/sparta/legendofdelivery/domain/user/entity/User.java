@@ -55,4 +55,8 @@ public class User extends Timestamped {
         this.oauth = oauth;
     }
 
+    public void encryptionPassword(String encryptionPassword) {
+        this.password = encryptionPassword;
+    }
+
 }
