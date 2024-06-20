@@ -24,8 +24,8 @@ public class Like extends Timestamped {
     @JoinColumn(name = "review_id")
     private Review review;
 
-    public Like(Long id, User user, Review review) {
-        this.id = id;
+    public Like(Review review, User user) {
+        this.user = user;
         this.review = review;
     }
 }
