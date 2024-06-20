@@ -22,8 +22,8 @@ public class LikeService {
 
     public void addLike(Long reviewId, User user) {
         Review review = findReviewById(reviewId);
-        Like checkLike = findLikeByReviewIdAndUserId(reviewId, user.getId());
-        if (checkLike != null) {
+        Like checkIsLike = findLikeByReviewIdAndUserId(reviewId, user.getId());
+        if (checkIsLike != null) {
             throw new BadRequestException("이미 좋아요를 누른 리뷰입니다.");
         } else {
             Like like = new Like(review, user);
