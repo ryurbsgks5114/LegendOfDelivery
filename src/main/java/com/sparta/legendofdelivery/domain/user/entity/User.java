@@ -2,9 +2,6 @@ package com.sparta.legendofdelivery.domain.user.entity;
 
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
 import com.sparta.legendofdelivery.global.entity.Timestamped;
-import com.sparta.legendofdelivery.global.enumeration.UserOauth;
-import com.sparta.legendofdelivery.global.enumeration.UserRole;
-import com.sparta.legendofdelivery.global.enumeration.UserStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
