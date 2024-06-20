@@ -1,6 +1,7 @@
 package com.sparta.legendofdelivery.domain.order.entity;
 
 
+import com.sparta.legendofdelivery.domain.store.entity.Store;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.global.entity.Timestamped;
 import jakarta.persistence.*;
@@ -22,9 +23,9 @@ public class Order extends Timestamped {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "store_id")
-    private Store store;
+//    @ManyToOne
+//    @JoinColumn(name = "store_id")
+//    private Store store;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
