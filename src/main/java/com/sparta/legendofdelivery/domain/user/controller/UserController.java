@@ -1,8 +1,8 @@
-package com.sparta.legendofdelivery.domain.user.contorller;
+package com.sparta.legendofdelivery.domain.user.controller;
 
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
-import com.sparta.legendofdelivery.global.dto.CommonResponse;
+import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +22,11 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<CommonResponse<Void>> signup(@Valid @RequestBody UserSignupRequestDto requestDto) {
+    public ResponseEntity<MessageResponse> signup(@Valid @RequestBody UserSignupRequestDto requestDto) {
 
         userService.signup(requestDto);
 
-        CommonResponse<Void> response = new CommonResponse<>("회원가입에 성공했습니다.");
+        MessageResponse response = new MessageResponse(201, "회원가입에 성공했습니다.");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
