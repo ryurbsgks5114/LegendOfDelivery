@@ -1,7 +1,6 @@
 package com.sparta.legendofdelivery.domain.like.entity;
 
 import com.sparta.legendofdelivery.domain.review.entity.Review;
-import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.global.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class like extends Timestamped {
+public class Like extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
