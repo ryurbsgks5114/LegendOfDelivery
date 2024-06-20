@@ -1,6 +1,6 @@
 package com.sparta.legendofdelivery.global.exception;
 
-import com.sparta.legendofdelivery.global.dto.CommonResponse;
+import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +18,9 @@ import java.util.Map;
 @RestController
 public class GlobalException {
 
-    private ResponseEntity<CommonResponse<Void>> createResponseEntity(Exception e, HttpStatus httpStatusCode) {
+    private ResponseEntity<MessageResponse> createResponseEntity(Exception e, HttpStatus httpStatusCode, int code) {
 
-        CommonResponse<Void> response = new CommonResponse<>(e.getMessage());
+        MessageResponse response = new MessageResponse(code, e.getMessage());
 
         log.error(e.getMessage());
 
@@ -28,18 +28,18 @@ public class GlobalException {
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<CommonResponse<Void>> badRequestException(BadRequestException e) {
-        return createResponseEntity(e, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<MessageResponse> badRequestException(BadRequestException e) {
+        return createResponseEntity(e, HttpStatus.BAD_REQUEST, 400);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<CommonResponse<Void>> unauthorizedException(UnauthorizedException e) {
-        return createResponseEntity(e, HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<MessageResponse> unauthorizedException(UnauthorizedException e) {
+        return createResponseEntity(e, HttpStatus.UNAUTHORIZED, 401);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<CommonResponse<Void>> notFoundException(NotFoundException e) {
-        return createResponseEntity(e, HttpStatus.NOT_FOUND);
+    public ResponseEntity<MessageResponse> notFoundException(NotFoundException e) {
+        return createResponseEntity(e, HttpStatus.NOT_FOUND, 404);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
