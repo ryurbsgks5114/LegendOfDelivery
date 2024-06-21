@@ -1,7 +1,6 @@
 package com.sparta.legendofdelivery.domain.like.controller;
 
 import com.sparta.legendofdelivery.domain.like.service.LikeService;
-import com.sparta.legendofdelivery.global.dto.CommonResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
