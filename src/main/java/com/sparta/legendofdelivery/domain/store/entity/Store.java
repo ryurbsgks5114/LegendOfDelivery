@@ -1,5 +1,6 @@
 package com.sparta.legendofdelivery.domain.store.entity;
 
+import com.sparta.legendofdelivery.domain.store.dto.StoreRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class Store {
     private String name;
 
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private Category category;
 
     @Column(nullable = false)
@@ -30,4 +32,11 @@ public class Store {
 
     @Column
     private StoreState storeState;
+
+    public Store(StoreRequestDto requestDto) {
+        this.name = requestDto.getName();
+        this.category = requestDto.getCategory();
+        this.intro = requestDto.getIntro();
+    }
+
 }
