@@ -41,5 +41,10 @@ public class Order extends Timestamped {
         this.count = requestDto.getCount();
         this.user = user;
         this.store = store;
+        this.orderStatus = OrderStatusEnum.ACCEPTANCE;
+    }
+
+    public void updateOrderStatus(OrderStatusEnum updateStatus) {
+        this.orderStatus = updateStatus;
     }
 }
