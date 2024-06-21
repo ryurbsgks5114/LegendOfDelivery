@@ -56,4 +56,5 @@ public class Store extends Timestamped {
     public void closeStore () {
         this.storeState = StoreState.CLOSE;
     }
+
 }

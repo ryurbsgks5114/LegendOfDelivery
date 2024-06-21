@@ -2,6 +2,7 @@ package com.sparta.legendofdelivery.domain.store.service;
 
 import com.sparta.legendofdelivery.domain.store.dto.StoreRequestDto;
 import com.sparta.legendofdelivery.domain.store.entity.Store;
+import com.sparta.legendofdelivery.domain.store.entity.StoreState;
 import com.sparta.legendofdelivery.domain.store.repository.StoreRepository;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
@@ -77,6 +78,11 @@ public class StoreService {
     public MessageResponse openStore(Long id) {
 
         Store store = findStoreById(id);
+
+        if(store.getStoreState().equals(StoreState.OPEN)){
+            throw new BadRequestException("이미 오픈된 가게 입니다.");
+        }
+
         store.openStore();
 
         return new MessageResponse(200, store.getName() + " 이(가) 오픈 되었습니다.");
@@ -87,6 +93,11 @@ public class StoreService {
     public MessageResponse closeStore(Long id) {
 
         Store store = findStoreById(id);
+
+        if(store.getStoreState().equals(StoreState.CLOSE)){
+            throw new BadRequestException("이미 마감된 가게 입니다.");
+        }
+
         store.closeStore();
 
         return new MessageResponse(200, store.getName() + " 이(가) 마감 되었습니다.");
