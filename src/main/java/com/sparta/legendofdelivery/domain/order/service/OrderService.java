@@ -56,6 +56,21 @@ public class OrderService {
         return (long) (count * price);
     }
 
+    // status 상태 변경
+    public DataResponse<OrderResponseDto> updateOrderStatus(Long orderId, OrderStatusEnum updateStatus) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("상태 변경하려는 주문을 찾을 수 없습니다."));
+
+        if (order.getOrderStatus() == updateStatus) {
+            throw new IllegalArgumentException("이미 같은 상태입니다.");
+        }
+
+        order.updateOrderStatus(updateStatus);
+        Order saveOrder = orderRepository.save(order);
+
+        OrderResponseDto responseDto = new OrderResponseDto(saveOrder);
+        return new DataResponse<>(200, "주문 상태 변경에 성공했습니다.", responseDto);
+    }
+
     public DataResponse<List<OrderResponseDto>> getAllOrderByClient(Long userId, int page, int size, String sortBy) {
 
         User user = userRepository.findById(userId).orElseThrow(
@@ -72,15 +87,5 @@ public class OrderService {
         }
 
         return new DataResponse<>(200, "주문 전체 목록 조회에 성공했습니다.", responseDtoList);
-    }
-
-    // status 상태 변경
-    public DataResponse<OrderResponseDto> updateOrderStatus(Long orderId, OrderStatusEnum updateStatus) {
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException("상태를 변경하려는 주문을 찾을 수 없습니다."));
-        order.updateOrderStatus(updateStatus);
-        Order saveOrder = orderRepository.save(order);
-
-        OrderResponseDto responseDto = new OrderResponseDto(saveOrder);
-        return new DataResponse<>(200, "주문 상태 변경에 성공했습니다.", responseDto);
     }
 }

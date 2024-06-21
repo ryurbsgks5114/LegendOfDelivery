@@ -5,6 +5,7 @@ import com.sparta.legendofdelivery.domain.order.dto.OrderResponseDto;
 import com.sparta.legendofdelivery.domain.order.dto.OrderStatusRequestDto;
 import com.sparta.legendofdelivery.domain.order.service.OrderService;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
+import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,11 +34,14 @@ public class OrderController {
 
     // 주문 접수 상태 변경
     @PutMapping("/orders/{orderId}/status")
-    public ResponseEntity<DataResponse<OrderResponseDto>> updateOrderStatus(@PathVariable Long orderId,
-                                                                            @Valid @RequestBody OrderStatusRequestDto requestDto) {
-        DataResponse<OrderResponseDto> response = orderService.updateOrderStatus(orderId, requestDto.getUpdateStatus());
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId,
+                                               @Valid @RequestBody OrderStatusRequestDto requestDto) {
+        try {
+            DataResponse<OrderResponseDto> response = orderService.updateOrderStatus(orderId, requestDto.getUpdateStatus());
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(400, e.getMessage()));
+        }
     }
 
     // 사용자별 전체 주문 목록 조회
