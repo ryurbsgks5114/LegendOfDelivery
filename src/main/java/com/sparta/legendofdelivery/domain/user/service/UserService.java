@@ -7,6 +7,9 @@ import com.sparta.legendofdelivery.domain.user.entity.UserRole;
 import com.sparta.legendofdelivery.domain.user.entity.UserStatus;
 import com.sparta.legendofdelivery.domain.user.repository.UserRepository;
 import com.sparta.legendofdelivery.global.exception.BadRequestException;
+import com.sparta.legendofdelivery.global.exception.NotFoundException;
+import com.sparta.legendofdelivery.global.security.UserDetailsImpl;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +40,16 @@ public class UserService {
         user.encryptionPassword(encryptionPassword);
 
         userRepository.save(user);
+
+    }
+
+    @Transactional
+    public void logout() {
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = findByUserId(userDetails.getUsername()).orElseThrow( () -> new NotFoundException("해당 회원은 존재하지 않습니다."));
+
+        user.updateRefreshToken(null);
 
     }
 

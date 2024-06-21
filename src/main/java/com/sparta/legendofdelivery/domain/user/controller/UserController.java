@@ -29,6 +29,14 @@ public class UserController {
         return createResponseEntity(HttpStatus.CREATED, "회원가입에 성공했습니다.");
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+
+        userService.logout();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     private ResponseEntity<MessageResponse> createResponseEntity(HttpStatus httpStatusCode, String message) {
 
         MessageResponse response = new MessageResponse(httpStatusCode.value(), message);
