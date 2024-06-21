@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface  StoreRepository extends JpaRepository<Store, Long> {
-    Page<Store> findAllByOrderByCreateAtDesc(Pageable pageable);
+public interface StoreRepository extends JpaRepository<Store, Long> {
+
+  Page<Store> findAllByOrderByCreateAtDesc(Pageable pageable);
+
 }
