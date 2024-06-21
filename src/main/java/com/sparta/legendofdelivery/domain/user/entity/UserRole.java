@@ -1,8 +1,17 @@
 package com.sparta.legendofdelivery.domain.user.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRole {
 
-    USER,
-    ADMIN;
+    USER("USER"),
+    ADMIN("ADMIN");
+
+    private final String role;
+
+    UserRole(String role) {
+        this.role = role;
+    }
 
 }

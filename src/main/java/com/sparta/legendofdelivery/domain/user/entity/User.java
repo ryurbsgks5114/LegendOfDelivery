@@ -56,4 +56,8 @@ public class User extends Timestamped {
         this.password = encryptionPassword;
     }
 
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
 }
