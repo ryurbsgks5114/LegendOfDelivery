@@ -39,23 +39,22 @@ public class OrderService {
         Store store = storeRepository.findById(requestDto.getStoreId()).orElseThrow(() -> new IllegalArgumentException("가게를 찾을 수 없습니다."));
 
         Order order = new Order(user, store, requestDto);
+        Long totalPrice = calculateTotalPrice(order, store);
+        order.setTotalPrice(totalPrice);
+
         Order saveOrder = orderRepository.save(order);
 
         return new DataResponse<>(200, "주문 생성에 성공했습니다.", new OrderResponseDto(saveOrder));
     }
 
-    // totalPrice
-    // Store 엔티티 에서 category.burger.getPrice() 와 Order 엔티티에서 count 를 가져와서 곱한 값을 totalPrice 에 주입
-//    public Long getTotalPrice(Order order, Store store) {
-//
-//        Category
-//
-//        Integer count = order.getCount();
-//        Integer price = (Integer) Category.getPrice();
-//
-//        Long TotalPrice = (long) count * price;
-//        order.getTotalPrice() = new TotalPrice;
-//    }
+     // totalPrice
+     // storeId를 받아서 store 객체에 있는 category(enum클래스) 와 Order 객체에서 count 를 가져와서 곱한 값을 totalPrice 에 주입
+    public Long calculateTotalPrice(Order order, Store store) {
+
+        Integer count = order.getCount();
+        Integer price = store.getCategory().getPrice();
+        return (long) (count * price);
+    }
 
     public DataResponse<List<OrderResponseDto>> getAllOrderByClient(Long userId, int page, int size, String sortBy) {
 

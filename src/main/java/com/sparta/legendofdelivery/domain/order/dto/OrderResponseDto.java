@@ -15,7 +15,7 @@ public class OrderResponseDto {
     private LocalDateTime modifiedAt;
     private OrderStatusEnum orderStatus; // 주문 접수, 주문 완료
     private Integer count; // 주문 수
-//    private Long totalPrice; // 가게 * 주문 수
+    private Long totalPrice; // 가게 * 주문 수
 
     public OrderResponseDto(Order order) {
         this.id = order.getId();
@@ -25,6 +25,6 @@ public class OrderResponseDto {
         this.modifiedAt = order.getModifiedAt();
         this.orderStatus = order.getOrderStatus();
         this.count = order.getCount();
-//        this.totalPrice = order.getTotalPrice();
+        this.totalPrice = order.getTotalPrice();
     }
 }

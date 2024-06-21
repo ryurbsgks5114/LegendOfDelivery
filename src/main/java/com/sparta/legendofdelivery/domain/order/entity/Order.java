@@ -34,17 +34,22 @@ public class Order extends Timestamped {
     @Column(nullable = false)
     private Integer count;
 
-//    @Column(name = "total_price", nullable = false)
-//    private Long totalPrice;
+    @Column(name = "total_price", nullable = false)
+    private Long totalPrice;
 
     public Order(User user, Store store, OrderRequestDto requestDto) {
         this.user = user;
-        this.count = requestDto.getCount();
         this.store = store;
+        this.count = requestDto.getCount();
         this.orderStatus = OrderStatusEnum.ACCEPTANCE;
+        this.totalPrice = 0L;
     }
 
     public void updateOrderStatus(OrderStatusEnum updateStatus) {
         this.orderStatus = updateStatus;
+    }
+
+    public void setTotalPrice(Long totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }
