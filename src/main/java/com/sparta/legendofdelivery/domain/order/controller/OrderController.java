@@ -2,7 +2,7 @@ package com.sparta.legendofdelivery.domain.order.controller;
 
 import com.sparta.legendofdelivery.domain.order.dto.OrderRequestDto;
 import com.sparta.legendofdelivery.domain.order.dto.OrderResponseDto;
-import com.sparta.legendofdelivery.domain.order.entity.OrderStatusEnum;
+import com.sparta.legendofdelivery.domain.order.dto.OrderStatusRequestDto;
 import com.sparta.legendofdelivery.domain.order.service.OrderService;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
 import jakarta.validation.Valid;
@@ -22,12 +22,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/stores/{storeId}/orders/{userId}")
-    public ResponseEntity<DataResponse<OrderResponseDto>> postOrder(@PathVariable Long storeId,
-                                                                    @PathVariable Long userId,
+    @PostMapping("/users/{userId}/orders")
+    public ResponseEntity<DataResponse<OrderResponseDto>> postOrder(@PathVariable Long userId,
                                                                     @Valid @RequestBody OrderRequestDto requestDto) {
 
-        DataResponse<OrderResponseDto> response = orderService.createOrder(storeId, userId, requestDto);
+        DataResponse<OrderResponseDto> response = orderService.createOrder(userId, requestDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -35,8 +34,8 @@ public class OrderController {
     // 주문 접수 상태 변경
     @PutMapping("/orders/{orderId}/status")
     public ResponseEntity<DataResponse<OrderResponseDto>> updateOrderStatus(@PathVariable Long orderId,
-                                                                            @RequestParam OrderStatusEnum updateStatus) {
-        DataResponse<OrderResponseDto> response = orderService.updateOrderStatus(orderId, updateStatus);
+                                                                            @Valid @RequestBody OrderStatusRequestDto requestDto) {
+        DataResponse<OrderResponseDto> response = orderService.updateOrderStatus(orderId, requestDto.getUpdateStatus());
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -47,7 +46,7 @@ public class OrderController {
             @PathVariable Long userId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy) {
+            @RequestParam(value = "sortBy", defaultValue = "createAt") String sortBy) {
 
         DataResponse<List<OrderResponseDto>> response = orderService.getAllOrderByClient(userId, page - 1, size, sortBy);
 

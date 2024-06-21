@@ -5,6 +5,7 @@ import com.sparta.legendofdelivery.domain.order.dto.OrderResponseDto;
 import com.sparta.legendofdelivery.domain.order.entity.Order;
 import com.sparta.legendofdelivery.domain.order.entity.OrderStatusEnum;
 import com.sparta.legendofdelivery.domain.order.repository.OrderRepository;
+import com.sparta.legendofdelivery.domain.store.entity.Category;
 import com.sparta.legendofdelivery.domain.store.entity.Store;
 import com.sparta.legendofdelivery.domain.store.repository.StoreRepository;
 import com.sparta.legendofdelivery.domain.user.entity.User;
@@ -31,21 +32,30 @@ public class OrderService {
         this.storeRepository = storeRepository;
     }
 
-    public DataResponse<OrderResponseDto> createOrder(Long storeId, Long userId, OrderRequestDto requestDto) {
+    public DataResponse<OrderResponseDto> createOrder(Long userId, OrderRequestDto requestDto) {
 
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("유저를 찾을 수 없습니다.")
-        );
+                () -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+        Store store = storeRepository.findById(requestDto.getStoreId()).orElseThrow(() -> new IllegalArgumentException("가게를 찾을 수 없습니다."));
 
-        Store store = storeRepository.findById(storeId).orElseThrow(
-                () -> new IllegalArgumentException("가게를 찾을 수 없습니다")
-        );
-
-        Order order = new Order(requestDto, user, store);
+        Order order = new Order(user, store, requestDto);
         Order saveOrder = orderRepository.save(order);
 
         return new DataResponse<>(200, "주문 생성에 성공했습니다.", new OrderResponseDto(saveOrder));
     }
+
+    // totalPrice
+    // Store 엔티티 에서 category.burger.getPrice() 와 Order 엔티티에서 count 를 가져와서 곱한 값을 totalPrice 에 주입
+//    public Long getTotalPrice(Order order, Store store) {
+//
+//        Category
+//
+//        Integer count = order.getCount();
+//        Integer price = (Integer) Category.getPrice();
+//
+//        Long TotalPrice = (long) count * price;
+//        order.getTotalPrice() = new TotalPrice;
+//    }
 
     public DataResponse<List<OrderResponseDto>> getAllOrderByClient(Long userId, int page, int size, String sortBy) {
 
@@ -74,5 +84,4 @@ public class OrderService {
         OrderResponseDto responseDto = new OrderResponseDto(saveOrder);
         return new DataResponse<>(200, "주문 상태 변경에 성공했습니다.", responseDto);
     }
-
 }
