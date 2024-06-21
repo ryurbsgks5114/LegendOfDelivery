@@ -6,11 +6,12 @@ import com.sparta.legendofdelivery.domain.store.service.StoreService;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/stores")
+@RequestMapping("/api/admin/stores")
 public class StoreController {
 
     private final StoreService storeService;
@@ -20,7 +21,7 @@ public class StoreController {
     }
 
     @PostMapping
-    public ResponseEntity<DataResponse> store(@Valid @RequestBody StoreRequestDto requestDto) {
+    public ResponseEntity<DataResponse<Store>> store(@Valid @RequestBody StoreRequestDto requestDto) {
 
         DataResponse<Store> response = storeService.createStore(requestDto);
 
@@ -28,7 +29,7 @@ public class StoreController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DataResponse> getStores(@PathVariable Long id) {
+    public ResponseEntity<DataResponse<Store>> getStores(@PathVariable Long id) {
 
         DataResponse<Store> response = storeService.getStoreById(id);
 
@@ -37,7 +38,7 @@ public class StoreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DataResponse> updateStore(@PathVariable Long id, @Valid @RequestBody StoreRequestDto requestDto) {
+    public ResponseEntity<DataResponse<Store>> updateStore(@PathVariable Long id, @Valid @RequestBody StoreRequestDto requestDto) {
 
         DataResponse<Store> response = storeService.updateStore(id, requestDto);
 
@@ -49,6 +50,27 @@ public class StoreController {
     public ResponseEntity<MessageResponse> deleteStore(@PathVariable Long id) {
 
         return ResponseEntity.ok(storeService.deleteStore(id));
+
+    }
+
+    @GetMapping
+    public Page<Store> getStores(@RequestParam(defaultValue = "0") int page) {
+
+       return storeService.findAllStores(page);
+
+    }
+
+    @PutMapping("/open/{id}")
+    public ResponseEntity<MessageResponse> openStore(@PathVariable Long id) {
+
+        return ResponseEntity.ok(storeService.openStore(id));
+
+    }
+
+    @PutMapping("/close/{id}")
+    public ResponseEntity<MessageResponse> closeStore(@PathVariable Long id) {
+
+        return ResponseEntity.ok(storeService.closeStore(id));
 
     }
 
