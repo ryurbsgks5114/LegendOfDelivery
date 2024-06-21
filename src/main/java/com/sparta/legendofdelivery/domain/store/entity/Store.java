@@ -1,6 +1,7 @@
 package com.sparta.legendofdelivery.domain.store.entity;
 
 import com.sparta.legendofdelivery.domain.store.dto.StoreRequestDto;
+import com.sparta.legendofdelivery.global.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Store {
+public class Store extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +38,22 @@ public class Store {
         this.name = requestDto.getName();
         this.category = requestDto.getCategory();
         this.intro = requestDto.getIntro();
+        this.dibsCount = 0L;
+        this.reviewCount = 0L;
+        this.storeState = StoreState.CLOSE;
     }
 
     public void updateStore (StoreRequestDto requestDto) {
         this.name = requestDto.getName();
         this.category = requestDto.getCategory();
         this.intro = requestDto.getIntro();
+    }
+
+    public void openStore () {
+        this.storeState = StoreState.OPEN;
+    }
+
+    public void closeStore () {
+        this.storeState = StoreState.CLOSE;
     }
 }

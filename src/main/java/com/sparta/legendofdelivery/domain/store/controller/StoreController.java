@@ -6,6 +6,7 @@ import com.sparta.legendofdelivery.domain.store.service.StoreService;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,27 @@ public class StoreController {
     public ResponseEntity<MessageResponse> deleteStore(@PathVariable Long id) {
 
         return ResponseEntity.ok(storeService.deleteStore(id));
+
+    }
+
+    @GetMapping
+    public Page<Store> getStores(@RequestParam(defaultValue = "0") int page) {
+
+       return storeService.findAllStores(page);
+
+    }
+
+    @PutMapping("/open/{id}")
+    public ResponseEntity<MessageResponse> openStore(@PathVariable Long id) {
+
+        return ResponseEntity.ok(storeService.openStore(id));
+
+    }
+
+    @PutMapping("/close/{id}")
+    public ResponseEntity<MessageResponse> closeStore(@PathVariable Long id) {
+
+        return ResponseEntity.ok(storeService.closeStore(id));
 
     }
 

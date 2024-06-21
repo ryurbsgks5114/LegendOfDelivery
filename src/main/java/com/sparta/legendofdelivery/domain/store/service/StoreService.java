@@ -6,6 +6,9 @@ import com.sparta.legendofdelivery.domain.store.repository.StoreRepository;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import com.sparta.legendofdelivery.global.exception.BadRequestException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +52,44 @@ public class StoreService {
         findStoreById(id);
         storeRepository.deleteById(id);
 
-        return new MessageResponse(200, "가게 삭제에 성공 하셧습니다");
+        return new MessageResponse(200, "가게 삭제에 성공 하셨습니다");
+
+    }
+
+    public Page<Store> findAllStores(int page) {
+
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Store> storePage = storeRepository.findAll(pageable);
+
+        if (!storePage.hasContent()) {
+            throw new BadRequestException("가게 데이터가 비어있습니다.");
+        }
+
+        if (page >= storePage.getTotalPages()) {
+            throw new BadRequestException("토탈 페이지를 넘기는 요청은 안됩니다.");
+        }
+
+        return storeRepository.findAllByOrderByCreateAtDesc(pageable);
+
+    }
+
+    @Transactional
+    public MessageResponse openStore(Long id) {
+
+        Store store = findStoreById(id);
+        store.openStore();
+
+        return new MessageResponse(200, store.getName() + " 이(가) 오픈 되었습니다.");
+
+    }
+
+    @Transactional
+    public MessageResponse closeStore(Long id) {
+
+        Store store = findStoreById(id);
+        store.closeStore();
+
+        return new MessageResponse(200, store.getName() + " 이(가) 마감 되었습니다.");
 
     }
 
