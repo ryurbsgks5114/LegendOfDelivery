@@ -1,18 +1,18 @@
 package com.sparta.legendofdelivery.domain.order.entity;
 
 
+import com.sparta.legendofdelivery.domain.order.dto.OrderRequestDto;
 import com.sparta.legendofdelivery.domain.store.entity.Store;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.global.entity.Timestamped;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "order")
+@Table(name = "orders")
 public class Order extends Timestamped {
 
     @Id
@@ -23,17 +23,23 @@ public class Order extends Timestamped {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @ManyToOne
-//    @JoinColumn(name = "store_id")
-//    private Store store;
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatusEnum orderStatus;
 
     @Column(nullable = false)
-    private Long count;
+    private Integer count;
 
     @Column(name = "total_price", nullable = false)
     private Long totalPrice;
+
+    public Order(OrderRequestDto requestDto, User user, Store store) {
+        this.count = requestDto.getCount();
+        this.user = user;
+        this.store = store;
+    }
 }
