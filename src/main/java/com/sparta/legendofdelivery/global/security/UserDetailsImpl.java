@@ -2,6 +2,7 @@ package com.sparta.legendofdelivery.global.security;
 
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.domain.user.entity.UserRole;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Getter
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
