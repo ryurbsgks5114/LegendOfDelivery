@@ -88,6 +88,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private void sendLoginResponse(HttpServletResponse response, User user, String accessToken, String refreshToken) throws IOException {
 
         user.updateRefreshToken(refreshToken);
+        userRepository.save(user);
 
         ResponseCookie refreshTokenCookie = jwtProvider.createCookieRefreshToken(refreshToken);
         response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
