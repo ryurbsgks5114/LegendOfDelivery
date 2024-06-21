@@ -40,7 +40,7 @@ public class JwtProvider {
 
     }
 
-    private String generateToken(String userId, UserRole role, Date expirationDate) {
+    private String generateToken(String userId, String role, Date expirationDate) {
         return Jwts.builder()
                 .setSubject(userId)
                 .claim("auth", role)
@@ -57,14 +57,14 @@ public class JwtProvider {
         return new Date(date.getTime() + ms);
     }
 
-    public String createAccessToken(String userId, UserRole role) {
+    public String createAccessToken(String userId, String role) {
 
         Date expirationDate = generateExpirationDate(ACCESS_TOKEN_EXPIRATION);
 
         return generateToken(userId, role, expirationDate);
     }
 
-    public String createRefreshToken(String userId, UserRole role) {
+    public String createRefreshToken(String userId, String role) {
 
         Date expirationDate = generateExpirationDate(REFRESH_TOKEN_EXPIRATION);
 
