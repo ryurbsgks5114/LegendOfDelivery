@@ -1,6 +1,5 @@
 package com.sparta.legendofdelivery.domain.user.service;
 
-import com.sparta.legendofdelivery.domain.user.dto.UserLoginRequestDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.domain.user.entity.UserOauth;
@@ -41,22 +40,8 @@ public class UserService {
 
     }
 
-    public void login(UserLoginRequestDto requestDto) {
-
-        Optional<User> user = findByUserId(requestDto.getUserId());
-
-        if (user.isEmpty() || user.get().getStatus().equals(UserStatus.LEAVE) || !checkPassword(requestDto.getPassword(), user.get().getPassword())) {
-            throw new BadRequestException("아이디, 비밀번호를 확인해주세요.");
-        }
-
-    }
-
     public Optional<User> findByUserId(String userId) {
         return userRepository.findByUserId(userId);
-    }
-
-    private boolean checkPassword(String requestPassword, String userPassword) {
-        return passwordEncoder.matches(requestPassword, userPassword);
     }
 
 }

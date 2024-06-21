@@ -1,6 +1,5 @@
 package com.sparta.legendofdelivery.domain.user.controller;
 
-import com.sparta.legendofdelivery.domain.user.dto.UserLoginRequestDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
@@ -28,14 +27,6 @@ public class UserController {
         userService.signup(requestDto);
 
         return createResponseEntity(HttpStatus.CREATED, "회원가입에 성공했습니다.");
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<MessageResponse> login(@Valid @RequestBody UserLoginRequestDto requestDto) {
-
-        userService.login(requestDto);
-
-        return createResponseEntity(HttpStatus.OK, "로그인에 성공했습니다.");
     }
 
     private ResponseEntity<MessageResponse> createResponseEntity(HttpStatus httpStatusCode, String message) {
