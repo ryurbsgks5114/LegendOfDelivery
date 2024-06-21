@@ -18,42 +18,33 @@ import java.util.Map;
 @RestController
 public class GlobalException {
 
-    private ResponseEntity<MessageResponse> createResponseEntity(Exception e, HttpStatus httpStatusCode, int code) {
+    private ResponseEntity<MessageResponse> createResponseEntity(String message, HttpStatus httpStatusCode) {
 
-        MessageResponse response = new MessageResponse(code, e.getMessage());
+        MessageResponse response = new MessageResponse(httpStatusCode.value(), message);
 
-        log.error(e.getMessage());
+        log.error(message);
 
         return ResponseEntity.status(httpStatusCode).body(response);
     }
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<MessageResponse> badRequestException(BadRequestException e) {
-        return createResponseEntity(e, HttpStatus.BAD_REQUEST, 400);
+        return createResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<MessageResponse> unauthorizedException(UnauthorizedException e) {
-        return createResponseEntity(e, HttpStatus.UNAUTHORIZED, 401);
+        return createResponseEntity(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<MessageResponse> notFoundException(NotFoundException e) {
-        return createResponseEntity(e, HttpStatus.NOT_FOUND, 404);
+        return createResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> notValidException(MethodArgumentNotValidException e) {
-
-        Map<String, String> errors = new HashMap<>();
-
-        for (FieldError el : e.getBindingResult().getFieldErrors()) {
-            errors.put(el.getField(), el.getDefaultMessage());
-        }
-
-        log.error("입력값을 확인해 주세요.");
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    public ResponseEntity<MessageResponse> notValidException(MethodArgumentNotValidException e) {
+        return createResponseEntity("입력값을 확인해 주세요.", HttpStatus.BAD_REQUEST);
     }
 
 }
