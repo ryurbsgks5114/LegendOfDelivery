@@ -39,4 +39,9 @@ public class Store {
         this.intro = requestDto.getIntro();
     }
 
+    public void updateStore (StoreRequestDto requestDto) {
+        this.name = requestDto.getName();
+        this.category = requestDto.getCategory();
+        this.intro = requestDto.getIntro();
+    }
 }
