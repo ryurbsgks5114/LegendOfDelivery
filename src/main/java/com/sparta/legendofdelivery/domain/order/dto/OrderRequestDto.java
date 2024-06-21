@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderRequestDto {
 
-    private Long userId;
-    private Long storeId;
-    private Long count;
+    private Integer count;
+
 }
