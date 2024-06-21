@@ -14,13 +14,13 @@ public class OrderResponseDto {
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
     private OrderStatusEnum orderStatus; // 주문 접수, 주문 완료
-    private Long count; // 주문 수
+    private Integer count; // 주문 수
     private Long totalPrice; // 가게 * 주문 수
 
     public OrderResponseDto(Order order) {
         this.id = order.getId();
         this.userId = order.getUser().getId();
-//        this.storeId = order.getStore().getId();
+        this.storeId = order.getStore().getId();
         this.createAt = order.getCreateAt();
         this.modifiedAt = order.getModifiedAt();
         this.orderStatus = order.getOrderStatus();
