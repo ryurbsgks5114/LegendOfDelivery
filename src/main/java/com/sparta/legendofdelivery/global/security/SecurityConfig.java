@@ -1,6 +1,7 @@
 package com.sparta.legendofdelivery.global.security;
 
 import com.sparta.legendofdelivery.domain.user.repository.UserRepository;
+import com.sparta.legendofdelivery.global.dto.SecurityResponse;
 import com.sparta.legendofdelivery.global.jwt.JwtProvider;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -23,13 +24,15 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final UserRepository userRepository;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final SecurityResponse securityResponse;
 
-    public SecurityConfig(JwtProvider jwtProvider, UserDetailsServiceImpl userDetailsService, AuthenticationConfiguration authenticationConfiguration, UserRepository userRepository, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+    public SecurityConfig(JwtProvider jwtProvider, UserDetailsServiceImpl userDetailsService, AuthenticationConfiguration authenticationConfiguration, UserRepository userRepository, CustomAuthenticationEntryPoint customAuthenticationEntryPoint, SecurityResponse securityResponse) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
         this.authenticationConfiguration = authenticationConfiguration;
         this.userRepository = userRepository;
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
+        this.securityResponse = securityResponse;
     }
 
     @Bean
@@ -40,7 +43,7 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
 
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtProvider, userRepository);
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtProvider, userRepository, securityResponse);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
 
         return filter;
@@ -48,7 +51,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtProvider, userDetailsService);
+        return new JwtAuthorizationFilter(jwtProvider, userDetailsService, securityResponse);
     }
 
     @Bean
@@ -59,8 +62,8 @@ public class SecurityConfig {
         http.sessionManagement( (sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests( (authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("api/users/signup").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/reviews/*").permitAll()
+                        .requestMatchers("/api/users/signup").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/*").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling( (exceptionHandling) -> {
                     exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint);
