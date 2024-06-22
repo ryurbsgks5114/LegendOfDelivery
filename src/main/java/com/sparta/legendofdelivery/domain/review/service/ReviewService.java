@@ -4,6 +4,8 @@ package com.sparta.legendofdelivery.domain.review.service;
 import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.REVIEW_CREATION_LIMIT_EXCEEDED;
 import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.REVIEW_NOT_FOUND;
 import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.STORE_REVIEW_NOT_FOUND;
+import static com.sparta.legendofdelivery.domain.review.entity.successMessage.REVIEW_CREATED;
+import static com.sparta.legendofdelivery.domain.review.entity.successMessage.STORE_REVIEWS_FETCHED;
 
 import com.sparta.legendofdelivery.domain.order.repository.OrderRepository;
 import com.sparta.legendofdelivery.domain.review.dto.CreateReviewRequestDto;
@@ -16,6 +18,7 @@ import com.sparta.legendofdelivery.domain.store.entity.Store;
 import com.sparta.legendofdelivery.domain.store.service.StoreService;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
+import com.sparta.legendofdelivery.global.dto.DataResponse;
 import com.sparta.legendofdelivery.global.exception.BadRequestException;
 import com.sparta.legendofdelivery.global.exception.NotFoundException;
 import java.util.List;
@@ -35,7 +38,7 @@ public class ReviewService {
 
 
   @Transactional
-  public CreateReviewResponseDto createReview(CreateReviewRequestDto requestDto) {
+  public DataResponse<CreateReviewResponseDto> createReview(CreateReviewRequestDto requestDto) {
     Store store = storeService.findStoreById(requestDto.getStoreId());
     User user = userService.getUser();
 
@@ -46,27 +49,41 @@ public class ReviewService {
     }
 
     Review review = reviewRepository.save(new Review(requestDto, store, user));
-    return new CreateReviewResponseDto(review);
+    return new DataResponse<>(
+        REVIEW_CREATED.getStatus(),
+        REVIEW_CREATED.getMessage(),
+        new CreateReviewResponseDto(review
+        ));
+
   }
 
   @Transactional(readOnly = true)
-  public StoreByReviewResponseDto storeReviewList(Long storeId) {
+  public DataResponse<StoreByReviewResponseDto> storeReviewList(Long storeId) {
     Store store = storeService.findStoreById(storeId);
     User user = userService.getUser();
     List<Review> reviewList = reviewRepository.findByUserAndStore(user, store);
     if (null == reviewList) {
       throw new NotFoundException(STORE_REVIEW_NOT_FOUND.getMessage());
     }
-    return new StoreByReviewResponseDto(storeId, user.getUserId(), reviewList);
+    return new DataResponse<>(
+        STORE_REVIEWS_FETCHED.getStatus(),
+        STORE_REVIEWS_FETCHED.getMessage(),
+        new StoreByReviewResponseDto(storeId, user.getUserId(), reviewList
+        ));
   }
 
   @Transactional(readOnly = true)
-  public UserReviewResponseDto userReviewList() {
+  public DataResponse<UserReviewResponseDto> userReviewList() {
     User user = userService.getUser();
     List<Review> reviewList = reviewRepository.findByUser(user);
     if (null == reviewList) {
       throw new NotFoundException(REVIEW_NOT_FOUND.getMessage());
     }
-    return new UserReviewResponseDto(user.getUserId(), reviewList);
+
+    return new DataResponse<>(
+        STORE_REVIEWS_FETCHED.getStatus(),
+        STORE_REVIEWS_FETCHED.getMessage(),
+        new UserReviewResponseDto(user.getUserId(), reviewList
+        ));
   }
 }
