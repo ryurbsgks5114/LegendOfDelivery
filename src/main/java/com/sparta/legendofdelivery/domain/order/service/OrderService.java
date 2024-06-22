@@ -116,15 +116,16 @@ public class OrderService {
         }
     }
 
-    public MessageResponse deleteOrder(Long id) {
-        findOrderById(id);
-        orderRepository.deleteById(id);
-
+    public MessageResponse deleteOrder(Long orderId) {
+        User user = userService.getUser();
+        // 주문 조회
+        Order Order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("주문을 찾을 수 없습니다."));
+        // 주문 생성자와 JWT 토큰의 사용자가 일치하는지 확인
+        if (!Order.getUser().getId().equals(user.getId())) {
+            throw new UnauthorizedException("본인의 주문만 삭제할 수 있습니다.");
+        }
+        orderRepository.deleteById(orderId);
         return new MessageResponse(200, "주문 삭제에 성공했습니다.");
-    }
-
-    public void findOrderById(Long id) {
-        orderRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 주문이 없습니다."));
     }
 }
