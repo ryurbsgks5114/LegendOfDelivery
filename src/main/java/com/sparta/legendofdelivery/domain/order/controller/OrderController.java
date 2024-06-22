@@ -65,9 +65,4 @@ public class OrderController {
     public ResponseEntity<MessageResponse> deleteOrder(@PathVariable Long orderId) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.deleteOrder(orderId));
     }
-
-    public ResponseEntity<MessageResponse> deleteStore(@PathVariable Long id) {
-
-        return ResponseEntity.ok(storeService.deleteStore(id));
-    }
 }
