@@ -8,6 +8,7 @@ import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.SPECIFI
 import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.STORE_REVIEW_NOT_FOUND;
 import static com.sparta.legendofdelivery.domain.review.entity.successMessage.REVIEW_CREATED;
 import static com.sparta.legendofdelivery.domain.review.entity.successMessage.REVIEW_DELETION_SUCCESS;
+import static com.sparta.legendofdelivery.domain.review.entity.successMessage.REVIEW_UPDATE_SUCCESS;
 import static com.sparta.legendofdelivery.domain.review.entity.successMessage.STORE_REVIEWS_FETCHED;
 
 import com.sparta.legendofdelivery.domain.order.repository.OrderRepository;
@@ -15,6 +16,7 @@ import com.sparta.legendofdelivery.domain.review.dto.CreateReviewRequestDto;
 import com.sparta.legendofdelivery.domain.review.dto.CreateReviewResponseDto;
 import com.sparta.legendofdelivery.domain.review.dto.DeleteReviewRequestDto;
 import com.sparta.legendofdelivery.domain.review.dto.StoreByReviewResponseDto;
+import com.sparta.legendofdelivery.domain.review.dto.UpdateReviewRequestDto;
 import com.sparta.legendofdelivery.domain.review.dto.UserReviewResponseDto;
 import com.sparta.legendofdelivery.domain.review.entity.Review;
 import com.sparta.legendofdelivery.domain.review.repository.ReviewRepository;
@@ -66,7 +68,7 @@ public class ReviewService {
   }
 
   @Transactional(readOnly = true)
-  public DataResponse<StoreByReviewResponseDto> storeReviewList(Long storeId) {
+  public DataResponse<StoreByReviewResponseDto> getStoreReviewList(Long storeId) {
     Store store = storeService.findStoreById(storeId);
     User user = userService.getUser();
     List<Review> reviewList = reviewRepository.findByUserAndStore(user, store);
@@ -81,7 +83,7 @@ public class ReviewService {
   }
 
   @Transactional(readOnly = true)
-  public DataResponse<UserReviewResponseDto> userReviewList() {
+  public DataResponse<UserReviewResponseDto> getUserReviewList() {
     User user = userService.getUser();
     List<Review> reviewList = reviewRepository.findByUser(user);
     if (null == reviewList) {
@@ -97,15 +99,35 @@ public class ReviewService {
 
   @Transactional
   public MessageResponse deleteReview(Long reviewId, DeleteReviewRequestDto requestDto) {
-    Review review = reviewRepository.findById(reviewId)
-        .orElseThrow(() -> new NotFoundException(SPECIFIED_REVIEW_NOT_FOUND.getMessage()));
+    Review review = findByReviewId(reviewId);
     User user = userService.getUser();
-
-    if (!passwordEncoder.matches( requestDto.getPassword(), user.getPassword())) {
-      throw new UnauthorizedException(DELETE_REVIEW_PERMISSION_DENIED.getMessage());
-    }
+    validatePassword(requestDto.getPassword(),user.getPassword());
 
     reviewRepository.delete(review);
     return new MessageResponse(REVIEW_DELETION_SUCCESS.getStatus(), REVIEW_DELETION_SUCCESS.getMessage());
+  }
+
+  @Transactional
+  public MessageResponse updateReview(Long reviewId, UpdateReviewRequestDto requestDto) {
+    Store store = storeService.findStoreById(requestDto.getStoreId());
+    findByReviewId(reviewId);
+    User user = userService.getUser();
+    validatePassword(requestDto.getPassword(), user.getPassword());
+    Review review = new Review();
+    review.update(requestDto, store, user);
+
+    return new MessageResponse(REVIEW_UPDATE_SUCCESS.getStatus(), REVIEW_UPDATE_SUCCESS.getMessage());
+  }
+
+
+  public Review findByReviewId(Long reviewId) {
+    return reviewRepository.findById(reviewId)
+        .orElseThrow(() -> new NotFoundException(SPECIFIED_REVIEW_NOT_FOUND.getMessage()));
+  }
+
+  public void validatePassword(String inputPassword, String dbPassword) {
+    if (!passwordEncoder.matches(inputPassword, dbPassword)) {
+      throw new UnauthorizedException(DELETE_REVIEW_PERMISSION_DENIED.getMessage());
+    }
   }
 }
