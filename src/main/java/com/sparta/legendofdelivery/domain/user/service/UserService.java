@@ -1,5 +1,6 @@
 package com.sparta.legendofdelivery.domain.user.service;
 
+import com.sparta.legendofdelivery.domain.user.dto.UserProfileResponseDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserWithdrawalRequestDto;
 import com.sparta.legendofdelivery.domain.user.entity.User;
@@ -8,6 +9,7 @@ import com.sparta.legendofdelivery.domain.user.entity.UserRole;
 import com.sparta.legendofdelivery.domain.user.entity.UserStatus;
 import com.sparta.legendofdelivery.domain.user.repository.UserRepository;
 import com.sparta.legendofdelivery.domain.user.security.UserDetailsImpl;
+import com.sparta.legendofdelivery.global.dto.DataResponse;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import com.sparta.legendofdelivery.global.exception.BadRequestException;
 import com.sparta.legendofdelivery.global.exception.NotFoundException;
@@ -94,6 +96,13 @@ public class UserService {
         }
 
         return validateToken(token);
+    }
+
+    public DataResponse<UserProfileResponseDto> getProfile() {
+
+        User user = getUser();
+
+        return new DataResponse<>(200, "프로필 조회에 성공했습니다.", new UserProfileResponseDto(user));
     }
 
     public User getUser() {

@@ -1,8 +1,10 @@
 package com.sparta.legendofdelivery.domain.user.controller;
 
+import com.sparta.legendofdelivery.domain.user.dto.UserProfileResponseDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserWithdrawalRequestDto;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
+import com.sparta.legendofdelivery.global.dto.DataResponse;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -12,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
@@ -21,7 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/users/signup")
     public ResponseEntity<MessageResponse> signup(@Valid @RequestBody UserSignupRequestDto requestDto) {
 
         MessageResponse response = userService.signup(requestDto);
@@ -29,7 +31,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/users/logout")
     public ResponseEntity<Void> logout() {
 
         userService.logout();
@@ -37,7 +39,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @DeleteMapping("/withdrawal")
+    @DeleteMapping("/users/withdrawal")
     public ResponseEntity<Void> withdrawal(@Valid @RequestBody UserWithdrawalRequestDto requestDto) {
 
         userService.withdrawal(requestDto);
@@ -45,13 +47,21 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PostMapping("/token/refresh")
+    @PostMapping("/users/token/refresh")
     public ResponseEntity<MessageResponse> refreshToken(HttpServletRequest request) {
 
         HttpHeaders headers = userService.refreshToken(request);
         MessageResponse response = new MessageResponse(200, "토큰 재발급에 성공했습니다.");
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<DataResponse<UserProfileResponseDto>> getProfile() {
+
+        DataResponse<UserProfileResponseDto> response = userService.getProfile();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }
