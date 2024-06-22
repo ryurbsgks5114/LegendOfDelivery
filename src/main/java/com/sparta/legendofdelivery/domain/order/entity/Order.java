@@ -46,8 +46,11 @@ public class Order extends Timestamped {
         calculateTotalPrice();
     }
 
-    public Order(Long storeId, Integer count) {
-        super();
+    public void updateOrder(OrderRequestDto requestDto, User user, Store store) {
+        this.user = user;
+        this.store = store;
+        this.count = requestDto.getCount();
+        calculateTotalPrice();
     }
 
     public void updateOrderStatus(OrderStatusEnum updateStatus) {

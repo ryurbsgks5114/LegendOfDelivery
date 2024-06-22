@@ -99,16 +99,13 @@ public class OrderService {
                 throw new UnauthorizedException("본인의 주문만 수정할 수 있습니다.");
             }
 
-            // 수정하려는 주문 객체 새로 생성
-            Order updateOrder = new Order(
-                    existingOrder.getId(),
-                    existingOrder.getUser(),
-                    requestDto.getStoreId(),
-                    requestDto.getCount(),
-                    existingOrder.getOrderDate()
-            );
+            Store store = storeRepository.findById(requestDto.getStoreId())
+                    .orElseThrow(() -> new NotFoundException("가게를 찾을 수 없습니다."));
 
-            Order saveOrder = orderRepository.save(updateOrder);
+            // 업데이트할 주문 객체 생성
+            existingOrder.updateOrder(requestDto, user, store);
+            
+            Order saveOrder = orderRepository.save(existingOrder);
             OrderResponseDto responseDto = new OrderResponseDto(saveOrder);
 
             return new DataResponse<>(200, "주문 상태가 수정되었습니다.", responseDto);
