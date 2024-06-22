@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public class ReviewRequestDto {
+public class CreateReviewRequestDto {
 
   @NotNull
   private Long storeId;

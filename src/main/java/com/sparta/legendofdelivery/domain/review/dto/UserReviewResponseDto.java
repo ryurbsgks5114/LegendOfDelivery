@@ -1,21 +1,17 @@
 package com.sparta.legendofdelivery.domain.review.dto;
 
-
 import com.sparta.legendofdelivery.domain.review.entity.Review;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter
-public class StoreByReviewResponseDto {
+public class UserReviewResponseDto {
 
-  private final Long storeId;
   private final String userId;
   private final List<ReviewResponseDto> responseDtoList;
 
-
-  public StoreByReviewResponseDto(Long storeId, String userId, List<Review> reviews) {
-    this.storeId = storeId;
+  public UserReviewResponseDto(String userId, List<Review> reviews) {
     this.userId = userId;
     this.responseDtoList = reviews.stream()
                                           .map(review -> new ReviewResponseDto(
@@ -27,6 +23,4 @@ public class StoreByReviewResponseDto {
                                           )
                                           .collect(Collectors.toList());
   }
-
-
 }
