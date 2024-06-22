@@ -28,7 +28,6 @@ import com.sparta.legendofdelivery.global.exception.BadRequestException;
 import com.sparta.legendofdelivery.global.exception.NotFoundException;
 import com.sparta.legendofdelivery.global.exception.UnauthorizedException;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -97,7 +96,7 @@ public class ReviewService {
   }
 
   @Transactional
-  public MessageResponse deleteReviewList(Long reviewId, DeleteReviewRequestDto requestDto) {
+  public MessageResponse deleteReview(Long reviewId, DeleteReviewRequestDto requestDto) {
     Review review = reviewRepository.findById(reviewId)
         .orElseThrow(() -> new NotFoundException(SPECIFIED_REVIEW_NOT_FOUND.getMessage()));
     User user = userService.getUser();
