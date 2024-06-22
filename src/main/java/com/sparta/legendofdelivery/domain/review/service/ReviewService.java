@@ -1,6 +1,10 @@
 package com.sparta.legendofdelivery.domain.review.service;
 
 
+import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.REVIEW_CREATION_LIMIT_EXCEEDED;
+import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.REVIEW_NOT_FOUND;
+import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.STORE_REVIEW_NOT_FOUND;
+
 import com.sparta.legendofdelivery.domain.order.repository.OrderRepository;
 import com.sparta.legendofdelivery.domain.review.dto.CreateReviewRequestDto;
 import com.sparta.legendofdelivery.domain.review.dto.CreateReviewResponseDto;
@@ -38,7 +42,7 @@ public class ReviewService {
     int orderCount = orderRepository.countByUserAndStore(user, store);
     int reviewCount = reviewRepository.countByUserAndStore(user, store);
     if (orderCount <= reviewCount) {
-      throw new BadRequestException("더 이상 리뷰 작성이 안됩니다.");
+      throw new BadRequestException(REVIEW_CREATION_LIMIT_EXCEEDED.getMessage());
     }
 
     Review review = reviewRepository.save(new Review(requestDto, store, user));
@@ -50,8 +54,8 @@ public class ReviewService {
     Store store = storeService.findStoreById(storeId);
     User user = userService.getUser();
     List<Review> reviewList = reviewRepository.findByUserAndStore(user, store);
-    if(null == reviewList) {
-      throw new NotFoundException("해당 가게의 리뷰를 찾을 수 없습니다.");
+    if (null == reviewList) {
+      throw new NotFoundException(STORE_REVIEW_NOT_FOUND.getMessage());
     }
     return new StoreByReviewResponseDto(storeId, user.getUserId(), reviewList);
   }
@@ -60,8 +64,8 @@ public class ReviewService {
   public UserReviewResponseDto userReviewList() {
     User user = userService.getUser();
     List<Review> reviewList = reviewRepository.findByUser(user);
-    if(null == reviewList) {
-      throw new NotFoundException("작성한 리뷰가 없습니다.");
+    if (null == reviewList) {
+      throw new NotFoundException(REVIEW_NOT_FOUND.getMessage());
     }
     return new UserReviewResponseDto(user.getUserId(), reviewList);
   }
