@@ -1,5 +1,6 @@
 package com.sparta.legendofdelivery.domain.user.controller;
 
+import com.sparta.legendofdelivery.domain.user.dto.UserProfileModifyRequestDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserProfileResponseDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserWithdrawalRequestDto;
@@ -60,6 +61,14 @@ public class UserController {
     public ResponseEntity<DataResponse<UserProfileResponseDto>> getProfile() {
 
         DataResponse<UserProfileResponseDto> response = userService.getProfile();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PatchMapping("/profile")
+    public ResponseEntity<DataResponse<UserProfileResponseDto>> modifyProfile(@Valid @RequestBody UserProfileModifyRequestDto requestDto) {
+
+        DataResponse<UserProfileResponseDto> response = userService.modifyProfile(requestDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

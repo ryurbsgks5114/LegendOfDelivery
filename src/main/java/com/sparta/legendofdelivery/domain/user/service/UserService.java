@@ -1,5 +1,6 @@
 package com.sparta.legendofdelivery.domain.user.service;
 
+import com.sparta.legendofdelivery.domain.user.dto.UserProfileModifyRequestDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserProfileResponseDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserWithdrawalRequestDto;
@@ -103,6 +104,28 @@ public class UserService {
         User user = getUser();
 
         return new DataResponse<>(200, "프로필 조회에 성공했습니다.", new UserProfileResponseDto(user));
+    }
+
+    @Transactional
+    public DataResponse<UserProfileResponseDto> modifyProfile(UserProfileModifyRequestDto requestDto) {
+
+        User user = getUser();
+
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+            throw new BadRequestException("비밀번호를 확인해주세요.");
+        }
+
+        if (StringUtils.hasText(requestDto.getEmail())) {
+            user.updateEmail(requestDto.getEmail());
+        }
+
+        if (StringUtils.hasText(requestDto.getName())) {
+            user.updateName(requestDto.getName());
+        }
+
+        userRepository.save(user);
+
+        return new DataResponse<>(200, "프로필 수정에 성공했습니다.", new UserProfileResponseDto(user));
     }
 
     public User getUser() {
