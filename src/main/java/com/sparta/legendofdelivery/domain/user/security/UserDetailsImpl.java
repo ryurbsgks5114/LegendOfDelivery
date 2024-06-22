@@ -1,4 +1,4 @@
-package com.sparta.legendofdelivery.global.security;
+package com.sparta.legendofdelivery.domain.user.security;
 
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.domain.user.entity.UserRole;
