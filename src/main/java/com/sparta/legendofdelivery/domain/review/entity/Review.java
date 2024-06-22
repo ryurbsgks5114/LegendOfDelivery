@@ -1,6 +1,7 @@
 package com.sparta.legendofdelivery.domain.review.entity;
 
 import com.sparta.legendofdelivery.domain.review.dto.CreateReviewRequestDto;
+import com.sparta.legendofdelivery.domain.review.dto.UpdateReviewRequestDto;
 import com.sparta.legendofdelivery.domain.store.entity.Store;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.global.entity.Timestamped;
@@ -38,6 +39,12 @@ public class Review extends Timestamped {
 
   public Review(CreateReviewRequestDto requestDto,Store store, User user) {
     this.content = requestDto.getComment();
+    this.store = store;
+    this.user = user;
+  }
+
+  public void updateReview(UpdateReviewRequestDto requestDto,Store store, User user) {
+    this.content = requestDto.getContent();
     this.store = store;
     this.user = user;
   }
