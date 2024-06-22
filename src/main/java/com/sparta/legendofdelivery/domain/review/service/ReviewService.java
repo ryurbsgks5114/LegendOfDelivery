@@ -110,10 +110,9 @@ public class ReviewService {
   @Transactional
   public MessageResponse updateReview(Long reviewId, UpdateReviewRequestDto requestDto) {
     Store store = storeService.findStoreById(requestDto.getStoreId());
-    findByReviewId(reviewId);
+    Review review = findByReviewId(reviewId);
     User user = userService.getUser();
     validatePassword(requestDto.getPassword(), user.getPassword());
-    Review review = new Review();
     review.update(requestDto, store, user);
 
     return new MessageResponse(REVIEW_UPDATE_SUCCESS.getStatus(), REVIEW_UPDATE_SUCCESS.getMessage());

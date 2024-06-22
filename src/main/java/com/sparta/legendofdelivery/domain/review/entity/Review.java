@@ -44,7 +44,7 @@ public class Review extends Timestamped {
   }
 
   public void update(UpdateReviewRequestDto requestDto,Store store, User user) {
-    this.content = requestDto.getComment();
+    this.content = requestDto.getContent();
     this.store = store;
     this.user = user;
   }

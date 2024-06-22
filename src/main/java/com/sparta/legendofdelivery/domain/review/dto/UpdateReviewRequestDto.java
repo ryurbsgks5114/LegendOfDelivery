@@ -8,7 +8,7 @@ import lombok.Getter;
 public class UpdateReviewRequestDto {
   @NotNull
   private Long storeId;
-  private String comment;
+  private String content;
   @NotBlank
   private String password;
 }
