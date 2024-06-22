@@ -5,6 +5,7 @@ import com.sparta.legendofdelivery.domain.order.dto.OrderRequestDto;
 import com.sparta.legendofdelivery.domain.store.entity.Store;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.global.entity.Timestamped;
+import com.sparta.legendofdelivery.global.exception.BadRequestException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,9 +38,30 @@ public class Order extends Timestamped {
     @Column(name = "total_price", nullable = false)
     private Long totalPrice;
 
-    public Order(OrderRequestDto requestDto, User user, Store store) {
-        this.count = requestDto.getCount();
+    public Order(User user, Store store, OrderRequestDto requestDto) {
         this.user = user;
         this.store = store;
+        this.count = requestDto.getCount();
+        this.orderStatus = OrderStatusEnum.ACCEPTANCE;
+        calculateTotalPrice();
+    }
+
+    public void updateOrder(OrderRequestDto requestDto, User user, Store store) {
+        this.user = user;
+        this.store = store;
+        this.count = requestDto.getCount();
+        calculateTotalPrice();
+    }
+
+    public void updateOrderStatus(OrderStatusEnum updateStatus) {
+        this.orderStatus = updateStatus;
+    }
+
+    private void calculateTotalPrice() {
+        if (this.store != null && this.count != null) {
+            this.totalPrice = (long) (this.store.getCategory().getPrice() * this.count);
+        } else {
+            throw new BadRequestException("주문을 처리할 수 없습니다: 매장 또는 수량이 설정되지 않았습니다.");
+        }
     }
 }
