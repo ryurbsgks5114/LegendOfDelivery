@@ -113,7 +113,7 @@ public class ReviewService {
     Review review = findByReviewId(reviewId);
     User user = userService.getUser();
     validatePassword(requestDto.getPassword(), user.getPassword());
-    review.update(requestDto, store, user);
+    review.updateReview(requestDto, store, user);
 
     return new MessageResponse(REVIEW_UPDATE_SUCCESS.getStatus(), REVIEW_UPDATE_SUCCESS.getMessage());
   }
