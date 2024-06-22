@@ -66,7 +66,7 @@ public class SecurityConfig {
         http.sessionManagement( (sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests( (authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/api/users/signup").permitAll()
+                        .requestMatchers("/api/users/signup", "/api/users/token/refresh").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/reviews/*").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling( (exceptionHandling) -> {
