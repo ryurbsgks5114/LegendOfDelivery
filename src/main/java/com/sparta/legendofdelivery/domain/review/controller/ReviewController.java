@@ -5,6 +5,7 @@ import com.sparta.legendofdelivery.domain.review.dto.CreateReviewRequestDto;
 import com.sparta.legendofdelivery.domain.review.dto.CreateReviewResponseDto;
 import com.sparta.legendofdelivery.domain.review.dto.DeleteReviewRequestDto;
 import com.sparta.legendofdelivery.domain.review.dto.StoreByReviewResponseDto;
+import com.sparta.legendofdelivery.domain.review.dto.UpdateReviewRequestDto;
 import com.sparta.legendofdelivery.domain.review.dto.UserReviewResponseDto;
 import com.sparta.legendofdelivery.domain.review.service.ReviewService;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,19 +36,26 @@ public class ReviewController {
   }
 
   @GetMapping("/{storeId}")
-  public ResponseEntity<DataResponse<StoreByReviewResponseDto>> storeReviewList(
+  public ResponseEntity<DataResponse<StoreByReviewResponseDto>> getStoreReviewList(
       @PathVariable Long storeId) {
-    return ResponseEntity.ok(reviewService.storeReviewList(storeId));
+    return ResponseEntity.ok(reviewService.getStoreReviewList(storeId));
   }
 
   @GetMapping
-  public ResponseEntity<DataResponse<UserReviewResponseDto>> getReviewList() {
-    return ResponseEntity.ok(reviewService.userReviewList());
+  public ResponseEntity<DataResponse<UserReviewResponseDto>> getUserReviewList() {
+    return ResponseEntity.ok(reviewService.getUserReviewList());
   }
 
   @DeleteMapping("/{reviewId}")
   public ResponseEntity<MessageResponse> deleteReview(@PathVariable Long reviewId,
       @RequestBody DeleteReviewRequestDto requestDto) {
     return ResponseEntity.ok(reviewService.deleteReview(reviewId, requestDto));
+  }
+
+  @PutMapping("/{reviewId}")
+  public ResponseEntity<MessageResponse> updateReview(@PathVariable Long reviewId,
+      @RequestBody UpdateReviewRequestDto requestDto
+      ){
+    return ResponseEntity.ok(reviewService.updateReview(reviewId, requestDto));
   }
 }
