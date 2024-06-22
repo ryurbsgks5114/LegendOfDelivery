@@ -11,6 +11,7 @@ import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.domain.user.repository.UserRepository;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
+import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import com.sparta.legendofdelivery.global.exception.BadRequestException;
 import com.sparta.legendofdelivery.global.exception.NotFoundException;
 import com.sparta.legendofdelivery.global.exception.UnauthorizedException;
@@ -99,12 +100,13 @@ public class OrderService {
                 throw new UnauthorizedException("본인의 주문만 수정할 수 있습니다.");
             }
 
+            // 가게 조회
             Store store = storeRepository.findById(requestDto.getStoreId())
                     .orElseThrow(() -> new NotFoundException("가게를 찾을 수 없습니다."));
 
             // 업데이트할 주문 객체 생성
             existingOrder.updateOrder(requestDto, user, store);
-            
+
             Order saveOrder = orderRepository.save(existingOrder);
             OrderResponseDto responseDto = new OrderResponseDto(saveOrder);
 
@@ -112,5 +114,17 @@ public class OrderService {
         } catch (BadRequestException e) {
             throw new BadRequestException("주문 수정에 실패했습니다.");
         }
+    }
+
+    public MessageResponse deleteOrder(Long id) {
+        findOrderById(id);
+        orderRepository.deleteById(id);
+
+        return new MessageResponse(200, "주문 삭제에 성공했습니다.");
+    }
+
+    public void findOrderById(Long id) {
+        orderRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 주문이 없습니다."));
     }
 }

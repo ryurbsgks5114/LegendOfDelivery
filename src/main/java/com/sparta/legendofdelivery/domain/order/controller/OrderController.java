@@ -4,6 +4,7 @@ import com.sparta.legendofdelivery.domain.order.dto.OrderRequestDto;
 import com.sparta.legendofdelivery.domain.order.dto.OrderResponseDto;
 import com.sparta.legendofdelivery.domain.order.dto.OrderStatusRequestDto;
 import com.sparta.legendofdelivery.domain.order.service.OrderService;
+import com.sparta.legendofdelivery.domain.store.service.StoreService;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import jakarta.validation.Valid;
@@ -18,9 +19,11 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final StoreService storeService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, StoreService storeService) {
         this.orderService = orderService;
+        this.storeService = storeService;
     }
 
     // 주문 생성
@@ -34,12 +37,9 @@ public class OrderController {
     @PutMapping("/orders/{orderId}/status")
     public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId,
                                                @Valid @RequestBody OrderStatusRequestDto requestDto) {
-        try {
+
             DataResponse<OrderResponseDto> response = orderService.updateOrderStatus(orderId, requestDto.getUpdateStatus());
             return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse(400, e.getMessage()));
-        }
     }
 
     // 사용자별 전체 주문 목록 조회
@@ -58,5 +58,16 @@ public class OrderController {
                                                                       @PathVariable Long orderId) {
         DataResponse<OrderResponseDto> response = orderService.updateOrder(orderId, requestDto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    // 주문 삭제
+    @DeleteMapping("/orders/{orderId}")
+    public ResponseEntity<MessageResponse> deleteOrder(@PathVariable Long orderId) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.deleteOrder(orderId));
+    }
+
+    public ResponseEntity<MessageResponse> deleteStore(@PathVariable Long id) {
+
+        return ResponseEntity.ok(storeService.deleteStore(id));
     }
 }
