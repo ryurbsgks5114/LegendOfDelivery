@@ -30,8 +30,7 @@ public class OrderController {
     public ResponseEntity<DataResponse<OrderResponseDto>> postOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                     @Valid @RequestBody OrderRequestDto requestDto) {
 
-        User user = userDetails.getUser();
-        DataResponse<OrderResponseDto> response = orderService.createOrder(user.getId(), requestDto);
+        DataResponse<OrderResponseDto> response = orderService.createOrder(userDetails.getUser(), requestDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -59,6 +58,15 @@ public class OrderController {
         Long userId = userDetails.getUser().getId();
         DataResponse<List<OrderResponseDto>> response = orderService.getAllOrderByClient(userId, page - 1, size, sortBy);
 
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping("/users/orders/{orderId}")
+    public ResponseEntity<DataResponse<OrderResponseDto>> updateOrder(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                      @Valid @RequestBody OrderRequestDto requestDto,
+                                                                      @PathVariable Long orderId) {
+
+        DataResponse<OrderResponseDto> response = orderService.updateOrder(orderId, requestDto, userDetails);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

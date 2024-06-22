@@ -104,7 +104,7 @@ public class StoreService {
 
     }
 
-    private Store findStoreById(Long id) {
+    public Store findStoreById(Long id) {
         return storeRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("해당 가게는 존재하지 않습니다."));
     }

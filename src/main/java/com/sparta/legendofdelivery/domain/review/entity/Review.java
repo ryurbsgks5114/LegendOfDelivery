@@ -1,5 +1,7 @@
 package com.sparta.legendofdelivery.domain.review.entity;
 
+import com.sparta.legendofdelivery.domain.review.dto.ReviewRequestDto;
+import com.sparta.legendofdelivery.domain.store.entity.Store;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.global.entity.Timestamped;
 import jakarta.persistence.CascadeType;
@@ -27,15 +29,20 @@ public class Review extends Timestamped {
 
   private String content;
 
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "user_id")
-//  private User user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
 
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "store_id")
-//  private Store store;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "store_id")
+  private Store store;
 
 //  @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
 //  private List<Like> likeList = new ArrayList<>();
 
+  public Review(ReviewRequestDto requestDto,Store store, User user) {
+    this.content = requestDto.getComment();
+    this.store = store;
+    this.user = user;
+  }
 }

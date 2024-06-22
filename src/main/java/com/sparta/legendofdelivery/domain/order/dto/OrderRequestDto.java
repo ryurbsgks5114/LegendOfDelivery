@@ -10,4 +10,9 @@ public class OrderRequestDto {
     private Long storeId;
     private Integer count;
 
+    public OrderRequestDto(Long storeId, Integer count) {
+        this.storeId = storeId;
+        this.count = count;
+    }
+
 }

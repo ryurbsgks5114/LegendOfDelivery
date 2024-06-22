@@ -1,5 +1,7 @@
 package com.sparta.legendofdelivery.global.security;
 
+import com.sparta.legendofdelivery.domain.user.security.UserDetailsServiceImpl;
+import com.sparta.legendofdelivery.global.dto.SecurityResponse;
 import com.sparta.legendofdelivery.global.jwt.JwtProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -8,6 +10,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -22,10 +25,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
     private final UserDetailsServiceImpl userDetailsService;
+    private final SecurityResponse securityResponse;
 
-    public JwtAuthorizationFilter(JwtProvider jwtProvider, UserDetailsServiceImpl userDetailsService) {
+    public JwtAuthorizationFilter(JwtProvider jwtProvider, UserDetailsServiceImpl userDetailsService, SecurityResponse securityResponse) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
+        this.securityResponse = securityResponse;
     }
 
     @Override
@@ -41,13 +46,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 setAuthentication(info.getSubject());
 
             } catch (ExpiredJwtException e) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType("text/plain;charset=UTF-8");
-                response.getWriter().write("만료된 토큰 입니다.");
+                securityResponse.sendResponse(response, HttpStatus.UNAUTHORIZED, "만료된 토큰 입니다.");
+
+                return;
             } catch (JwtException e) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType("text/plain;charset=UTF-8");
-                response.getWriter().write("유효하지 않은 토큰 입니다.");
+                securityResponse.sendResponse(response, HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰 입니다.");
+
+                return;
             }
 
         }
@@ -57,10 +62,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     }
 
     public void setAuthentication(String userId) {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
+
         Authentication authentication = createAuthentication(userId);
+
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
+
     }
 
     private Authentication createAuthentication(String userId) {

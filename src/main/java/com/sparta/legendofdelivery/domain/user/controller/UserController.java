@@ -1,15 +1,13 @@
 package com.sparta.legendofdelivery.domain.user.controller;
 
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
+import com.sparta.legendofdelivery.domain.user.dto.UserWithdrawalRequestDto;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,6 +26,23 @@ public class UserController {
 
         return createResponseEntity(HttpStatus.CREATED, "회원가입에 성공했습니다.");
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+
+        userService.logout();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @DeleteMapping("/withdrawal")
+    public ResponseEntity<Void> withdrawal(@Valid @RequestBody UserWithdrawalRequestDto requestDto) {
+
+        userService.withdrawal(requestDto);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 
     private ResponseEntity<MessageResponse> createResponseEntity(HttpStatus httpStatusCode, String message) {
 
