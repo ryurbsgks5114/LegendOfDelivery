@@ -6,7 +6,7 @@ import com.sparta.legendofdelivery.domain.review.dto.ReviewResponseDto;
 import com.sparta.legendofdelivery.domain.review.dto.StoreByReviewResponseDto;
 import com.sparta.legendofdelivery.domain.review.service.ReviewService;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
-import com.sparta.legendofdelivery.global.security.UserDetailsImpl;
+import com.sparta.legendofdelivery.domain.user.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -5,6 +5,7 @@ import com.sparta.legendofdelivery.domain.user.dto.UserLoginRequestDto;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.domain.user.entity.UserStatus;
 import com.sparta.legendofdelivery.domain.user.repository.UserRepository;
+import com.sparta.legendofdelivery.domain.user.security.UserDetailsImpl;
 import com.sparta.legendofdelivery.global.dto.SecurityResponse;
 import com.sparta.legendofdelivery.global.jwt.JwtProvider;
 import jakarta.servlet.FilterChain;

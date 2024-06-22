@@ -9,7 +9,7 @@ import com.sparta.legendofdelivery.domain.user.entity.UserStatus;
 import com.sparta.legendofdelivery.domain.user.repository.UserRepository;
 import com.sparta.legendofdelivery.global.exception.BadRequestException;
 import com.sparta.legendofdelivery.global.exception.NotFoundException;
-import com.sparta.legendofdelivery.global.security.UserDetailsImpl;
+import com.sparta.legendofdelivery.domain.user.security.UserDetailsImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -70,7 +70,7 @@ public class UserService {
 
     }
 
-    private User getUser() {
+    public User getUser() {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

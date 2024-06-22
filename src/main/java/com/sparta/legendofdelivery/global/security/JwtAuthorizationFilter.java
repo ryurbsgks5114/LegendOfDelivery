@@ -1,5 +1,6 @@
 package com.sparta.legendofdelivery.global.security;
 
+import com.sparta.legendofdelivery.domain.user.security.UserDetailsServiceImpl;
 import com.sparta.legendofdelivery.global.dto.SecurityResponse;
 import com.sparta.legendofdelivery.global.jwt.JwtProvider;
 import io.jsonwebtoken.Claims;
