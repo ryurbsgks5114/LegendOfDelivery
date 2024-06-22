@@ -10,6 +10,7 @@ import com.sparta.legendofdelivery.domain.review.repository.ReviewRepository;
 import com.sparta.legendofdelivery.domain.store.entity.Store;
 import com.sparta.legendofdelivery.domain.store.service.StoreService;
 import com.sparta.legendofdelivery.domain.user.entity.User;
+import com.sparta.legendofdelivery.domain.user.repository.UserRepository;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
 import com.sparta.legendofdelivery.global.exception.BadRequestException;
 import com.sparta.legendofdelivery.global.exception.NotFoundException;
@@ -24,15 +25,15 @@ public class ReviewService {
 
   private final ReviewRepository reviewRepository;
   private final OrderRepository orderRepository;
+  private final UserRepository userRepository;
 
   private final StoreService storeService;
-  private final UserService userService;
 
 
   @Transactional
   public ReviewResponseDto createReview(ReviewRequestDto requestDto, String userId) {
     Store store = storeService.findStoreById(requestDto.getStoreId());
-    User user = userService.findByUserId(userId).orElseThrow(
+    User user = userRepository.findByUserId(userId).orElseThrow(
         () -> new NotFoundException("존재하지 않는 회원입니다.")
     );
 
@@ -49,7 +50,7 @@ public class ReviewService {
   @Transactional
   public StoreByReviewResponseDto storeReviewList(Long storeId, String userId) {
     Store store = storeService.findStoreById(storeId);
-    User user = userService.findByUserId(userId).orElseThrow(
+    User user = userRepository.findByUserId(userId).orElseThrow(
         () -> new NotFoundException("존재하지 않는 회원입니다.")
     );
     List<Review> ReviewList = reviewRepository.findByUserAndStore(user, store);
