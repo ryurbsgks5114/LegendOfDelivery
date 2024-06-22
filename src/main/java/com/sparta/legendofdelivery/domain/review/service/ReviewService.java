@@ -13,6 +13,7 @@ import com.sparta.legendofdelivery.domain.store.service.StoreService;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
 import com.sparta.legendofdelivery.global.exception.BadRequestException;
+import com.sparta.legendofdelivery.global.exception.NotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,9 @@ public class ReviewService {
     Store store = storeService.findStoreById(storeId);
     User user = userService.getUser();
     List<Review> reviewList = reviewRepository.findByUserAndStore(user, store);
+    if(null == reviewList) {
+      throw new NotFoundException("해당 가게의 리뷰를 찾을 수 없습니다.");
+    }
     return new StoreByReviewResponseDto(storeId, user.getUserId(), reviewList);
   }
 
@@ -56,6 +60,9 @@ public class ReviewService {
   public UserReviewResponseDto userReviewList() {
     User user = userService.getUser();
     List<Review> reviewList = reviewRepository.findByUser(user);
+    if(null == reviewList) {
+      throw new NotFoundException("작성한 리뷰가 없습니다.");
+    }
     return new UserReviewResponseDto(user.getUserId(), reviewList);
   }
 }
