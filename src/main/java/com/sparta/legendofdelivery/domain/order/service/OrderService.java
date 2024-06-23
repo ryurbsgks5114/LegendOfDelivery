@@ -57,6 +57,7 @@ public class OrderService {
 
     // status 상태 변경
     public DataResponse<OrderResponseDto> updateOrderStatus(Long orderId, OrderStatusEnum updateStatus) {
+
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new NotFoundException("상태 변경하려는 주문을 찾을 수 없습니다."));
 
         if (order.getOrderStatus() == updateStatus) {
@@ -89,31 +90,27 @@ public class OrderService {
     // 주문 수정
     @Transactional
     public DataResponse<OrderResponseDto> updateOrder(Long orderId, OrderRequestDto requestDto) {
-        try {
-            User user = userService.getUser();
-            // 주문 조회
-            Order existingOrder = orderRepository.findById(orderId)
-                    .orElseThrow(() -> new NotFoundException("주문을 찾을 수 없습니다."));
+        User user = userService.getUser();
+        // 주문 조회
+        Order existingOrder = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("주문을 찾을 수 없습니다."));
 
-            // 주문 생성자와 JWT 토큰의 사용자가 일치하는지 확인
-            if (!existingOrder.getUser().getId().equals(user.getId())) {
-                throw new UnauthorizedException("본인의 주문만 수정할 수 있습니다.");
-            }
-
-            // 가게 조회
-            Store store = storeRepository.findById(requestDto.getStoreId())
-                    .orElseThrow(() -> new NotFoundException("가게를 찾을 수 없습니다."));
-
-            // 업데이트할 주문 객체 생성
-            existingOrder.updateOrder(requestDto, user, store);
-
-            Order saveOrder = orderRepository.save(existingOrder);
-            OrderResponseDto responseDto = new OrderResponseDto(saveOrder);
-
-            return new DataResponse<>(200, "주문 상태가 수정되었습니다.", responseDto);
-        } catch (BadRequestException e) {
-            throw new BadRequestException("주문 수정에 실패했습니다.");
+        // 주문 생성자와 JWT 토큰의 사용자가 일치하는지 확인
+        if (!existingOrder.getUser().getId().equals(user.getId())) {
+            throw new UnauthorizedException("본인의 주문만 수정할 수 있습니다.");
         }
+
+        // 가게 조회
+        Store store = storeRepository.findById(requestDto.getStoreId())
+                .orElseThrow(() -> new NotFoundException("가게를 찾을 수 없습니다."));
+
+        // 업데이트할 주문 객체 생성
+        existingOrder.updateOrder(requestDto, user, store);
+
+        Order saveOrder = orderRepository.save(existingOrder);
+        OrderResponseDto responseDto = new OrderResponseDto(saveOrder);
+
+        return new DataResponse<>(200, "주문 상태가 수정되었습니다.", responseDto);
     }
 
     public MessageResponse deleteOrder(Long orderId) {
