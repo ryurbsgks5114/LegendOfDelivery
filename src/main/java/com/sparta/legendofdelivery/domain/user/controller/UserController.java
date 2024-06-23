@@ -1,9 +1,6 @@
 package com.sparta.legendofdelivery.domain.user.controller;
 
-import com.sparta.legendofdelivery.domain.user.dto.UserProfileModifyRequestDto;
-import com.sparta.legendofdelivery.domain.user.dto.UserProfileResponseDto;
-import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
-import com.sparta.legendofdelivery.domain.user.dto.UserWithdrawalRequestDto;
+import com.sparta.legendofdelivery.domain.user.dto.*;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
 import com.sparta.legendofdelivery.global.dto.DataResponse;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
@@ -69,6 +66,14 @@ public class UserController {
     public ResponseEntity<DataResponse<UserProfileResponseDto>> modifyProfile(@Valid @RequestBody UserProfileModifyRequestDto requestDto) {
 
         DataResponse<UserProfileResponseDto> response = userService.modifyProfile(requestDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping("/profile/password")
+    public ResponseEntity<MessageResponse> updatePassword(@Valid @RequestBody UserProfileUpdatePasswordRequestDto requestDto) {
+
+        MessageResponse response = userService.updatePassword(requestDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

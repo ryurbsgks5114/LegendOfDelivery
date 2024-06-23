@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -42,6 +45,11 @@ public class User extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private UserOauth oauth;
 
+    @ElementCollection
+    private List<String> passwordList = new LinkedList<>();
+
+    private static final int PASSWORD_LENGTH = 3;
+
     public User(UserSignupRequestDto requestDto, UserRole role, UserStatus status, UserOauth oauth) {
         this.userId = requestDto.getUserId();
         this.password = requestDto.getPassword();
@@ -54,6 +62,12 @@ public class User extends Timestamped {
 
     public void encryptionPassword(String encryptionPassword) {
         this.password = encryptionPassword;
+
+        if (passwordList.size() >= PASSWORD_LENGTH) {
+            passwordList.remove(0);
+        }
+
+        passwordList.add(encryptionPassword);
     }
 
     public void updateRefreshToken(String refreshToken) {

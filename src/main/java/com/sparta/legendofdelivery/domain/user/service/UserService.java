@@ -1,9 +1,6 @@
 package com.sparta.legendofdelivery.domain.user.service;
 
-import com.sparta.legendofdelivery.domain.user.dto.UserProfileModifyRequestDto;
-import com.sparta.legendofdelivery.domain.user.dto.UserProfileResponseDto;
-import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
-import com.sparta.legendofdelivery.domain.user.dto.UserWithdrawalRequestDto;
+import com.sparta.legendofdelivery.domain.user.dto.*;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.domain.user.entity.UserOauth;
 import com.sparta.legendofdelivery.domain.user.entity.UserRole;
@@ -28,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -72,9 +71,7 @@ public class UserService {
 
         User user = getUser();
 
-        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new BadRequestException("비밀번호를 확인해주세요.");
-        }
+        checkPassword(requestDto.getPassword(), user.getPassword());
 
         if (user.getStatus() == UserStatus.LEAVE) {
             throw new NotFoundException("이미 탈퇴한 회원입니다.");
@@ -111,9 +108,7 @@ public class UserService {
 
         User user = getUser();
 
-        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new BadRequestException("비밀번호를 확인해주세요.");
-        }
+        checkPassword(requestDto.getPassword(), user.getPassword());
 
         if (StringUtils.hasText(requestDto.getEmail())) {
             user.updateEmail(requestDto.getEmail());
@@ -128,11 +123,48 @@ public class UserService {
         return new DataResponse<>(200, "프로필 수정에 성공했습니다.", new UserProfileResponseDto(user));
     }
 
+    @Transactional
+    public MessageResponse updatePassword(UserProfileUpdatePasswordRequestDto requestDto) {
+
+        User user = getUser();
+
+        checkPassword(requestDto.getPassword(), user.getPassword());
+
+        if (requestDto.getNewPassword().equals(requestDto.getPassword())) {
+            throw new BadRequestException("현재 비밀번호와 동일한 비밀번호로는 변경할 수 없습니다.");
+        }
+
+        if (!requestDto.getNewPassword().equals(requestDto.getCheckPassword())) {
+            throw new BadRequestException("비밀번호가 일치하지 않습니다.");
+        }
+
+        List<String> passwordList = user.getPasswordList();
+
+        for (String el : passwordList) {
+            if (passwordEncoder.matches(requestDto.getNewPassword(), el)) {
+                throw new BadRequestException("최근 3번 안에 사용한 비밀번호는 사용할 수 없습니다.");
+            }
+        }
+
+        String encryptionPassword = passwordEncoder.encode(requestDto.getNewPassword());
+        user.encryptionPassword(encryptionPassword);
+
+        userRepository.save(user);
+
+        return new MessageResponse(200, "비밀번호 수정에 성공했습니다.");
+    }
+
     public User getUser() {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return userRepository.findByUserId(userDetails.getUsername()).orElseThrow( () -> new NotFoundException("해당 회원은 존재하지 않습니다."));
+    }
+
+    private void checkPassword(String inputPassword, String dbPassword) {
+        if (!passwordEncoder.matches(inputPassword, dbPassword)) {
+            throw new BadRequestException("비밀번호를 확인해주세요.");
+        }
     }
 
     private String getRefreshToken(HttpServletRequest request) {
