@@ -64,4 +64,12 @@ public class User extends Timestamped {
         this.status = status;
     }
 
+    public void updateEmail(String email) {
+        this.email = email;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
 }
