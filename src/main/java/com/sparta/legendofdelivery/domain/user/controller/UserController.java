@@ -4,7 +4,9 @@ import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
 import com.sparta.legendofdelivery.domain.user.dto.UserWithdrawalRequestDto;
 import com.sparta.legendofdelivery.domain.user.service.UserService;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +24,9 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<MessageResponse> signup(@Valid @RequestBody UserSignupRequestDto requestDto) {
 
-        userService.signup(requestDto);
+        MessageResponse response = userService.signup(requestDto);
 
-        return createResponseEntity(HttpStatus.CREATED, "회원가입에 성공했습니다.");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/logout")
@@ -43,12 +45,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PostMapping("/token/refresh")
+    public ResponseEntity<MessageResponse> refreshToken(HttpServletRequest request) {
 
-    private ResponseEntity<MessageResponse> createResponseEntity(HttpStatus httpStatusCode, String message) {
+        HttpHeaders headers = userService.refreshToken(request);
+        MessageResponse response = new MessageResponse(200, "토큰 재발급에 성공했습니다.");
 
-        MessageResponse response = new MessageResponse(httpStatusCode.value(), message);
-
-        return ResponseEntity.status(httpStatusCode).body(response);
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
     }
 
 }

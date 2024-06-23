@@ -1,6 +1,5 @@
 package com.sparta.legendofdelivery.global.jwt;
 
-import com.sparta.legendofdelivery.domain.user.entity.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -40,7 +39,7 @@ public class JwtProvider {
 
     }
 
-    private String generateToken(String userId, String role, Date expirationDate) {
+    public String generateToken(String userId, String role, Date expirationDate) {
         return Jwts.builder()
                 .setSubject(userId)
                 .claim("auth", role)
