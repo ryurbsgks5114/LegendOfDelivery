@@ -83,8 +83,8 @@ public class ReviewService {
     }
 
     return new DataResponse<>(
-        STORE_REVIEWS_FETCHED.getStatus(),
-        STORE_REVIEWS_FETCHED.getMessage(),
+        USER_REVIEWS_FETCHED.getStatus(),
+        USER_REVIEWS_FETCHED.getMessage(),
         new UserReviewResponseDto(user.getUserId(), reviewList
         ));
   }
