@@ -31,7 +31,7 @@ public class ReviewController {
 
   }
 
-  @GetMapping("/users")
+  @GetMapping("/my")
   public ResponseEntity<DataResponse<UserReviewResponseDto>> getUserReviewList() {
 
     return ResponseEntity.ok(reviewService.getUserReviewList());
