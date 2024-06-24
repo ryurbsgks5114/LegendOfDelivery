@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/dibs")
+@RequestMapping("/api")
 public class DibsController {
 
     private final DibsService dibsService;
@@ -21,19 +21,19 @@ public class DibsController {
         this.dibsService = dibsService;
     }
 
-    @PostMapping("{storeId}")
+    @PostMapping("/stores/{storeId}/dibs")
     public ResponseEntity<MessageResponse> addDibs(@PathVariable Long storeId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(dibsService.addDibs(storeId, userDetails.getUser()));
 
     }
 
-    @DeleteMapping("{dibsId}")
-    public ResponseEntity<MessageResponse> deleteDibs(@PathVariable Long dibsId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok(dibsService.deleteDibs(dibsId, userDetails.getUser()));
+    @DeleteMapping("stores/{storeId}/dibs")
+    public ResponseEntity<MessageResponse> deleteDibs(@PathVariable Long storeId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok(dibsService.deleteDibs(storeId, userDetails.getUser()));
 
     }
 
-    @GetMapping("")
+    @GetMapping("dibs/my")
     public ResponseEntity<DataResponse<List<DibsResponseDto>>> getAllDibsByUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(dibsService.getAllDibsByUser(userDetails.getUser()));
     }
