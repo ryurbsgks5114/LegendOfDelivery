@@ -54,6 +54,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
     }
 
+    @PutMapping("/users/role")
+    public ResponseEntity<MessageResponse> updateUserRole() {
+
+        MessageResponse response = userService.updateUserRole();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @GetMapping("/profile")
     public ResponseEntity<DataResponse<UserProfileResponseDto>> getProfile() {
 

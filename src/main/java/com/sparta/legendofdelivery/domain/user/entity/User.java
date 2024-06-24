@@ -101,4 +101,8 @@ public class User extends Timestamped {
         this.name = name;
     }
 
+    public void updateUserRole(UserRole role) {
+        this.role = role;
+    }
+
 }
