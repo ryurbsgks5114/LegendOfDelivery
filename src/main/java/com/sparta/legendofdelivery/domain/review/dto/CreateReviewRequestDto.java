@@ -9,4 +9,5 @@ public class CreateReviewRequestDto {
   @NotNull
   private Long storeId;
   private String comment;
+
 }

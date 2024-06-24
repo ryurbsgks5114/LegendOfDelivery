@@ -5,5 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class OrderStatusRequestDto {
+
     private OrderStatusEnum updateStatus;
+
 }

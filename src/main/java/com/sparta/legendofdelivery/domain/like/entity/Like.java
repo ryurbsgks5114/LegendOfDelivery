@@ -29,4 +29,5 @@ public class Like extends Timestamped {
         this.user = user;
         this.review = review;
     }
+
 }

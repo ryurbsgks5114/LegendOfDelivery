@@ -1,9 +1,10 @@
 package com.sparta.legendofdelivery.domain.review.dto;
 
 import com.sparta.legendofdelivery.domain.review.entity.Review;
+import lombok.Getter;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Getter;
 
 @Getter
 public class UserReviewResponseDto {
@@ -23,4 +24,5 @@ public class UserReviewResponseDto {
                                           )
                                           .collect(Collectors.toList());
   }
+
 }
