@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/reviews")
+@RequestMapping("/api/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
 
@@ -24,14 +24,14 @@ public class ReviewController {
 
   }
 
-  @GetMapping("/{storeId}")
+  @GetMapping("/stores/{storeId}")
   public ResponseEntity<DataResponse<StoreByReviewResponseDto>> getStoreReviewList(@PathVariable Long storeId) {
 
     return ResponseEntity.ok(reviewService.getStoreReviewList(storeId));
 
   }
 
-  @GetMapping
+  @GetMapping("/users")
   public ResponseEntity<DataResponse<UserReviewResponseDto>> getUserReviewList() {
 
     return ResponseEntity.ok(reviewService.getUserReviewList());
