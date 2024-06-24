@@ -62,12 +62,12 @@ public class StoreService {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Store> storePage = storeRepository.findAll(pageable);
 
-        if (!storePage.hasContent()) {
-            throw new BadRequestException("가게 데이터가 비어있습니다.");
-        }
-
         if (page >= storePage.getTotalPages()) {
             throw new BadRequestException("토탈 페이지를 넘기는 요청은 안됩니다.");
+        }
+
+        if (!storePage.hasContent()) {
+            throw new BadRequestException("가게 데이터가 비어있습니다.");
         }
 
         return storeRepository.findAllByOrderByCreateAtDesc(pageable);
