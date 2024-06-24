@@ -45,11 +45,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@ExtendWith(MockitoExtension.class)
 class ReviewServiceTest {
 
   @Mock
@@ -113,8 +115,6 @@ class ReviewServiceTest {
     TestUtil.setField(review4, "content", "");
     TestUtil.setField(review4, "user", user);
     TestUtil.setField(review4, "store", store);
-    MockitoAnnotations.openMocks(this);
-
   }
 
   @Test
