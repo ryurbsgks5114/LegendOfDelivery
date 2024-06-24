@@ -8,7 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/likes")
+@RequestMapping("/api")
 public class LikeController {
 
     private final LikeService likeService;
@@ -17,7 +17,7 @@ public class LikeController {
         this.likeService = likeService;
     }
 
-    @PostMapping("{reviewId}")
+    @PostMapping("/reviews/{reviewId}/like")
     public ResponseEntity<MessageResponse> addLike(@PathVariable Long reviewId,
                                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
@@ -25,7 +25,7 @@ public class LikeController {
 
     }
 
-    @DeleteMapping("{reviewId}")
+    @DeleteMapping("/reviews/{reviewId}/like")
     public ResponseEntity<MessageResponse> deleteLike(@PathVariable Long reviewId,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
 

@@ -39,7 +39,7 @@ public class DibsService {
         if (checkIsDibs == null){
             Dibs dibs = new Dibs(user, store);
             dibsRepository.save(dibs);
-            store.updateDibsCount(1L);
+            store.upDibsCount();
             return new MessageResponse(200, "가게 찜에 성공했습니다.");
         } else {
             throw new BadRequestException("이미 찜한 가게입니다.");
@@ -55,7 +55,7 @@ public class DibsService {
 
         if (checkIsDibs != null){
             dibsRepository.delete(checkIsDibs);
-            store.updateDibsCount(-1L);
+            store.downDibsCount();
             return new MessageResponse(200, "찜 삭제를 성공했습니다.");
         } else {
             throw new NotFoundException("해당 가게는 찜한 가게가 아닙니다.");
