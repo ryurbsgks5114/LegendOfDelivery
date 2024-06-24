@@ -98,6 +98,16 @@ public class UserService {
 
     }
 
+    @Transactional
+    public MessageResponse updateUserRole() {
+
+        User user = getUser();
+
+        user.updateUserRole(UserRole.ADMIN);
+
+        return new MessageResponse(200, "회원 권한 변경에 성공했습니다.");
+    }
+
     public DataResponse<UserProfileResponseDto> getProfile() {
 
         User user = getUser();
