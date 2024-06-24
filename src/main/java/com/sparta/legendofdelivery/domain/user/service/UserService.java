@@ -56,6 +56,7 @@ public class UserService {
         userRepository.save(user);
 
         return new MessageResponse(201, "회원가입에 성공했습니다.");
+
     }
 
     @Transactional
@@ -94,6 +95,7 @@ public class UserService {
         }
 
         return validateToken(token);
+
     }
 
     public DataResponse<UserProfileResponseDto> getProfile() {
@@ -101,6 +103,7 @@ public class UserService {
         User user = getUser();
 
         return new DataResponse<>(200, "프로필 조회에 성공했습니다.", new UserProfileResponseDto(user));
+
     }
 
     @Transactional
@@ -121,6 +124,7 @@ public class UserService {
         userRepository.save(user);
 
         return new DataResponse<>(200, "프로필 수정에 성공했습니다.", new UserProfileResponseDto(user));
+
     }
 
     @Transactional
@@ -152,6 +156,7 @@ public class UserService {
         userRepository.save(user);
 
         return new MessageResponse(200, "비밀번호 수정에 성공했습니다.");
+
     }
 
     public User getUser() {
@@ -196,6 +201,7 @@ public class UserService {
             }
 
             return setHeaders(info, user);
+
         } catch (ExpiredJwtException e) {
             throw new UnauthorizedException("만료된 토큰 입니다.");
         } catch (JwtException e) {
@@ -217,6 +223,7 @@ public class UserService {
         user.updateRefreshToken(refreshToken);
 
         return headers;
+
     }
 
 }

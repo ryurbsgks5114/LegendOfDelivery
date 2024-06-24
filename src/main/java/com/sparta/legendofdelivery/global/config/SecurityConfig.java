@@ -67,7 +67,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests( (authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/api/users/signup", "/api/users/token/refresh").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/reviews/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/*", "/api/users/login/kakao", "/api/user/kakao/callback").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling( (exceptionHandling) -> {

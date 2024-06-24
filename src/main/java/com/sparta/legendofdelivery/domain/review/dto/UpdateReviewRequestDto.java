@@ -6,9 +6,13 @@ import lombok.Getter;
 
 @Getter
 public class UpdateReviewRequestDto {
+
   @NotNull
   private Long storeId;
+
   private String content;
+
   @NotBlank
   private String password;
+
 }

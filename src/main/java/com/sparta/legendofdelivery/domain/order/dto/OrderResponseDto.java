@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class OrderResponseDto {
+
     private Long id;
     private Long userId; // 회원 id
     private Long storeId; // 가게 id
@@ -27,4 +28,5 @@ public class OrderResponseDto {
         this.count = order.getCount();
         this.totalPrice = order.getTotalPrice();
     }
+
 }

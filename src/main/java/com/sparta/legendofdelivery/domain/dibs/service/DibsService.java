@@ -32,8 +32,10 @@ public class DibsService {
 
     @Transactional
     public MessageResponse addDibs(Long storeId, User user){
+
         Store store = findStoreById(storeId);
         Dibs checkIsDibs = findDibsByStoreIdAndUserId(storeId, user.getId());
+
         if (checkIsDibs == null){
             Dibs dibs = new Dibs(user, store);
             dibsRepository.save(dibs);
@@ -42,12 +44,15 @@ public class DibsService {
         } else {
             throw new BadRequestException("이미 찜한 가게입니다.");
         }
+
     }
 
     @Transactional
     public MessageResponse deleteDibs(Long storeId, User user){
+
         Store store = findStoreById(storeId);
         Dibs checkIsDibs = findDibsByStoreIdAndUserId(storeId, user.getId());
+
         if (checkIsDibs != null){
             dibsRepository.delete(checkIsDibs);
             store.updateDibsCount(-1L);
@@ -55,11 +60,12 @@ public class DibsService {
         } else {
             throw new NotFoundException("해당 가게는 찜한 가게가 아닙니다.");
         }
+
     }
 
     public DataResponse<List<DibsResponseDto>> getAllDibsByUser(User user){
-        List<Dibs> dibsList = dibsRepository.findAllByUserId(user.getId());
 
+        List<Dibs> dibsList = dibsRepository.findAllByUserId(user.getId());
         List<DibsResponseDto> dibsResponseDtoList = new ArrayList<>();
 
         if (!dibsList.isEmpty()){
@@ -72,6 +78,7 @@ public class DibsService {
         } else {
             throw new NotFoundException("찜한 가게가 없습니다.");
         }
+
     }
 
     private Store findStoreById(Long storeId){
@@ -83,4 +90,5 @@ public class DibsService {
     private Dibs findDibsByStoreIdAndUserId(Long storeId, Long userId){
         return dibsRepository.findByStoreIdAndUserId(storeId, userId).orElse(null);
     }
+
 }
