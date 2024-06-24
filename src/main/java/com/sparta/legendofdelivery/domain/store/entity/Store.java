@@ -57,8 +57,12 @@ public class Store extends Timestamped {
         this.storeState = StoreState.CLOSE;
     }
 
-    public void updateDibsCount(Long count){
-        this.dibsCount += count;
+    public void upDibsCount(){
+        this.dibsCount += 1L;
+    }
+
+    public void downDibsCount(){
+        this.dibsCount -= 1L;
     }
 
 }
