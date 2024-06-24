@@ -28,4 +28,5 @@ public class Dibs extends Timestamped {
         this.user = user;
         this.store = store;
     }
+
 }

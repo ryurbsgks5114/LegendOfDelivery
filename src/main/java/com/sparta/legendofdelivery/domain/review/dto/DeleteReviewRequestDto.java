@@ -5,6 +5,8 @@ import lombok.Getter;
 
 @Getter
 public class DeleteReviewRequestDto {
+
   @NotBlank
   private String password;
+
 }

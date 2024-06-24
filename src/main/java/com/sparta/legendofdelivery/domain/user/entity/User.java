@@ -1,6 +1,7 @@
 package com.sparta.legendofdelivery.domain.user.entity;
 
 import com.sparta.legendofdelivery.domain.user.dto.UserSignupRequestDto;
+import com.sparta.legendofdelivery.domain.user.oauth.dto.KakaoUserDto;
 import com.sparta.legendofdelivery.global.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -45,6 +46,9 @@ public class User extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private UserOauth oauth;
 
+    @Column
+    private Long kakaoId;
+
     @ElementCollection
     private List<String> passwordList = new LinkedList<>();
 
@@ -55,6 +59,17 @@ public class User extends Timestamped {
         this.password = requestDto.getPassword();
         this.email = requestDto.getEmail();
         this.name = requestDto.getName();
+        this.role = role;
+        this.status = status;
+        this.oauth = oauth;
+    }
+
+    public User(KakaoUserDto kakaoUserDto, String password, UserRole role, UserStatus status, UserOauth oauth) {
+        this.userId = kakaoUserDto.getId() + kakaoUserDto.getEmail();
+        this.password = password;
+        this.email = kakaoUserDto.getEmail();
+        this.name = kakaoUserDto.getNickname();
+        this.kakaoId = kakaoUserDto.getId();
         this.role = role;
         this.status = status;
         this.oauth = oauth;

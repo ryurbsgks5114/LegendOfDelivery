@@ -18,14 +18,16 @@ public class LikeController {
     }
 
     @PostMapping("/reviews/{reviewId}/like")
-    public ResponseEntity<MessageResponse> addLike(@PathVariable Long reviewId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<MessageResponse> addLike(@PathVariable Long reviewId,
+                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         return ResponseEntity.ok(likeService.addLike(reviewId, userDetails.getUser()));
 
     }
 
     @DeleteMapping("/reviews/{reviewId}/like")
-    public ResponseEntity<MessageResponse> deleteLike(@PathVariable Long reviewId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<MessageResponse> deleteLike(@PathVariable Long reviewId,
+                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         return ResponseEntity.ok(likeService.deleteLike(reviewId, userDetails.getUser()));
 

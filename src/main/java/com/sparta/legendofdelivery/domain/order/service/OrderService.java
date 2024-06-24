@@ -53,6 +53,7 @@ public class OrderService {
         orderRepository.save(order);
 
         return new DataResponse<>(200, "주문 생성에 성공했습니다.", new OrderResponseDto(order));
+
     }
 
     // status 상태 변경
@@ -69,6 +70,7 @@ public class OrderService {
 
         OrderResponseDto responseDto = new OrderResponseDto(saveOrder);
         return new DataResponse<>(200, "주문 상태 변경에 성공했습니다.", responseDto);
+
     }
 
     // 사용자별 전체 주문 목록 조회
@@ -85,11 +87,13 @@ public class OrderService {
         }
 
         return new DataResponse<>(200, "주문 전체 목록 조회에 성공했습니다.", responseDtoList);
+
     }
 
     // 주문 수정
     @Transactional
     public DataResponse<OrderResponseDto> updateOrder(Long orderId, OrderRequestDto requestDto) {
+
         User user = userService.getUser();
         // 주문 조회
         Order existingOrder = orderRepository.findById(orderId)
@@ -111,9 +115,11 @@ public class OrderService {
         OrderResponseDto responseDto = new OrderResponseDto(saveOrder);
 
         return new DataResponse<>(200, "주문 상태가 수정되었습니다.", responseDto);
+
     }
 
     public MessageResponse deleteOrder(Long orderId) {
+
         User user = userService.getUser();
         // 주문 조회
         Order Order = orderRepository.findById(orderId)
@@ -123,6 +129,9 @@ public class OrderService {
             throw new UnauthorizedException("본인의 주문만 삭제할 수 있습니다.");
         }
         orderRepository.deleteById(orderId);
+
         return new MessageResponse(200, "주문 삭제에 성공했습니다.");
+
     }
+
 }

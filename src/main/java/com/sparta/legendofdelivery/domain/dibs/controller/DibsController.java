@@ -22,19 +22,25 @@ public class DibsController {
     }
 
     @PostMapping("/stores/{storeId}/dibs")
-    public ResponseEntity<MessageResponse> addDibs(@PathVariable Long storeId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<MessageResponse> addDibs(@PathVariable Long storeId,
+                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         return ResponseEntity.ok(dibsService.addDibs(storeId, userDetails.getUser()));
 
     }
 
-    @DeleteMapping("stores/{storeId}/dibs")
-    public ResponseEntity<MessageResponse> deleteDibs(@PathVariable Long storeId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok(dibsService.deleteDibs(storeId, userDetails.getUser()));
+    @DeleteMapping("/stores/{storeId}/dibs")
+    public ResponseEntity<MessageResponse> deleteDibs(@PathVariable Long dibsId,
+                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        return ResponseEntity.ok(dibsService.deleteDibs(dibsId, userDetails.getUser()));
 
     }
 
     @GetMapping("dibs/my")
     public ResponseEntity<DataResponse<List<DibsResponseDto>>> getAllDibsByUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         return ResponseEntity.ok(dibsService.getAllDibsByUser(userDetails.getUser()));
+
     }
 }

@@ -1,7 +1,8 @@
 package com.sparta.legendofdelivery.domain.review.dto;
 
-import java.time.LocalDateTime;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Getter
 public class ReviewResponseDto {
@@ -18,4 +19,5 @@ public class ReviewResponseDto {
     this.createAt = createAt;
     this.modifiedAt = modifiedAt;
   }
+
 }

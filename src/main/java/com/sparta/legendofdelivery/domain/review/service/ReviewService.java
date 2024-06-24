@@ -1,23 +1,8 @@
 package com.sparta.legendofdelivery.domain.review.service;
 
 
-import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.DELETE_REVIEW_PERMISSION_DENIED;
-import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.REVIEW_CREATION_LIMIT_EXCEEDED;
-import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.REVIEW_NOT_FOUND;
-import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.SPECIFIED_REVIEW_NOT_FOUND;
-import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.STORE_REVIEW_NOT_FOUND;
-import static com.sparta.legendofdelivery.domain.review.entity.successMessage.REVIEW_CREATED;
-import static com.sparta.legendofdelivery.domain.review.entity.successMessage.REVIEW_DELETION_SUCCESS;
-import static com.sparta.legendofdelivery.domain.review.entity.successMessage.REVIEW_UPDATE_SUCCESS;
-import static com.sparta.legendofdelivery.domain.review.entity.successMessage.STORE_REVIEWS_FETCHED;
-
 import com.sparta.legendofdelivery.domain.order.repository.OrderRepository;
-import com.sparta.legendofdelivery.domain.review.dto.CreateReviewRequestDto;
-import com.sparta.legendofdelivery.domain.review.dto.CreateReviewResponseDto;
-import com.sparta.legendofdelivery.domain.review.dto.DeleteReviewRequestDto;
-import com.sparta.legendofdelivery.domain.review.dto.StoreByReviewResponseDto;
-import com.sparta.legendofdelivery.domain.review.dto.UpdateReviewRequestDto;
-import com.sparta.legendofdelivery.domain.review.dto.UserReviewResponseDto;
+import com.sparta.legendofdelivery.domain.review.dto.*;
 import com.sparta.legendofdelivery.domain.review.entity.Review;
 import com.sparta.legendofdelivery.domain.review.repository.ReviewRepository;
 import com.sparta.legendofdelivery.domain.store.entity.Store;
@@ -29,11 +14,15 @@ import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import com.sparta.legendofdelivery.global.exception.BadRequestException;
 import com.sparta.legendofdelivery.global.exception.NotFoundException;
 import com.sparta.legendofdelivery.global.exception.UnauthorizedException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static com.sparta.legendofdelivery.domain.review.entity.ErrorCode.*;
+import static com.sparta.legendofdelivery.domain.review.entity.successMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,16 +38,19 @@ public class ReviewService {
 
   @Transactional
   public DataResponse<CreateReviewResponseDto> createReview(CreateReviewRequestDto requestDto) {
+
     Store store = storeService.findStoreById(requestDto.getStoreId());
     User user = userService.getUser();
 
     int orderCount = orderRepository.countByUserAndStore(user, store);
     int reviewCount = reviewRepository.countByUserAndStore(user, store);
+
     if (orderCount <= reviewCount) {
       throw new BadRequestException(REVIEW_CREATION_LIMIT_EXCEEDED.getMessage());
     }
 
     Review review = reviewRepository.save(new Review(requestDto, store, user));
+
     return new DataResponse<>(
         REVIEW_CREATED.getStatus(),
         REVIEW_CREATED.getMessage(),
