@@ -44,10 +44,9 @@ public class OrderController {
 
     // 사용자별 전체 주문 목록 조회
     @GetMapping("/users/orders")
-    public ResponseEntity<DataResponse<List<OrderResponseDto>>> getAllOrderByUser(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createAt") String sortBy) {
+    public ResponseEntity<DataResponse<List<OrderResponseDto>>> getAllOrderByUser(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                                                  @RequestParam(value = "size", defaultValue = "5") int size,
+                                                                                  @RequestParam(value = "sortBy", defaultValue = "createAt") String sortBy) {
         DataResponse<List<OrderResponseDto>> response = orderService.getAllOrderByUser(page - 1, size, sortBy);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

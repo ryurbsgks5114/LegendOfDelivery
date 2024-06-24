@@ -7,4 +7,5 @@ public enum OrderStatusEnum {
     private String status;
 
     OrderStatusEnum(String type) { this.status = status; }
+
 }

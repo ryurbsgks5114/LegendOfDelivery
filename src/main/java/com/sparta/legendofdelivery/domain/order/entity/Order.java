@@ -64,4 +64,5 @@ public class Order extends Timestamped {
             throw new BadRequestException("주문을 처리할 수 없습니다: 매장 또는 수량이 설정되지 않았습니다.");
         }
     }
+
 }

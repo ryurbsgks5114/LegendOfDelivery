@@ -48,4 +48,5 @@ public class Review extends Timestamped {
     this.store = store;
     this.user = user;
   }
+
 }
