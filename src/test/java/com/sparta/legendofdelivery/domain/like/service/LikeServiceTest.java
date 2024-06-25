@@ -70,7 +70,7 @@ class LikeServiceTest {
     }
 
     @Test
-    @DisplayName("찜 등록 성공")
+    @DisplayName("좋아요 등록 성공")
     void addDibsSuccess() throws Exception {
 
         // Call the actual service method
