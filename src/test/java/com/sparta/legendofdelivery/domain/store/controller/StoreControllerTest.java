@@ -1,14 +1,39 @@
 package com.sparta.legendofdelivery.domain.store.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.legendofdelivery.MockSpringSecurityFilter;
+import com.sparta.legendofdelivery.domain.store.controller.StoreController;
+import com.sparta.legendofdelivery.domain.store.dto.StoreRequestDto;
+import com.sparta.legendofdelivery.domain.store.entity.Category;
+import com.sparta.legendofdelivery.domain.store.entity.Store;
+import com.sparta.legendofdelivery.domain.store.service.StoreService;
+import com.sparta.legendofdelivery.domain.user.entity.User;
+import com.sparta.legendofdelivery.domain.user.entity.UserRole;
+import com.sparta.legendofdelivery.domain.user.security.UserDetailsImpl;
 import com.sparta.legendofdelivery.global.config.SecurityConfig;
+import com.sparta.legendofdelivery.global.dto.DataResponse;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import java.security.Principal;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = StoreController.class, excludeFilters = {
         @ComponentScan.Filter(
