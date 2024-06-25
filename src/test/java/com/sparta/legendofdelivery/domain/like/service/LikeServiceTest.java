@@ -1,13 +1,10 @@
 package com.sparta.legendofdelivery.domain.like.service;
 
-import com.sparta.legendofdelivery.domain.dibs.service.DibsService;
 import com.sparta.legendofdelivery.domain.like.repository.LikeRepository;
 import com.sparta.legendofdelivery.domain.review.entity.Review;
 import com.sparta.legendofdelivery.domain.review.repository.ReviewRepository;
 import com.sparta.legendofdelivery.domain.review.util.TestUtil;
-import com.sparta.legendofdelivery.domain.store.entity.Category;
 import com.sparta.legendofdelivery.domain.store.entity.Store;
-import com.sparta.legendofdelivery.domain.store.repository.StoreRepository;
 import com.sparta.legendofdelivery.domain.user.entity.User;
 import com.sparta.legendofdelivery.domain.user.entity.UserOauth;
 import com.sparta.legendofdelivery.domain.user.entity.UserRole;

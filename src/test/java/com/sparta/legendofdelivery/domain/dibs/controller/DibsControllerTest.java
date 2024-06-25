@@ -52,9 +52,6 @@ class DibsControllerTest {
     @Autowired
     private WebApplicationContext context;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @MockBean
     private DibsService dibsService;
 

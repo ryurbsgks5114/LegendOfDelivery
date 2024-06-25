@@ -2,8 +2,6 @@ package com.sparta.legendofdelivery.domain.like.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.legendofdelivery.MockSpringSecurityFilter;
-import com.sparta.legendofdelivery.domain.dibs.controller.DibsController;
-import com.sparta.legendofdelivery.domain.dibs.service.DibsService;
 import com.sparta.legendofdelivery.domain.like.service.LikeService;
 import com.sparta.legendofdelivery.domain.review.entity.Review;
 import com.sparta.legendofdelivery.domain.review.util.TestUtil;
@@ -32,7 +30,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.security.Principal;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -55,9 +52,6 @@ class LikeControllerTest {
 
     @Autowired
     private WebApplicationContext context;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @MockBean
     private LikeService likeService;
