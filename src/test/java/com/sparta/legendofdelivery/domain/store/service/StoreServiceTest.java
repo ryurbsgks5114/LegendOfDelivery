@@ -1,16 +1,6 @@
-package com.sparta.legendofdelivery.service;
+package com.sparta.legendofdelivery.domain.store.service;
 
-import com.sparta.legendofdelivery.domain.store.dto.StoreRequestDto;
-import com.sparta.legendofdelivery.domain.store.entity.Category;
-import com.sparta.legendofdelivery.domain.store.entity.Store;
-import com.sparta.legendofdelivery.domain.store.repository.StoreRepository;
-import com.sparta.legendofdelivery.domain.store.service.StoreService;
-import com.sparta.legendofdelivery.global.dto.DataResponse;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
