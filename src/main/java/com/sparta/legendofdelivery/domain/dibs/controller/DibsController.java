@@ -30,10 +30,10 @@ public class DibsController {
     }
 
     @DeleteMapping("/stores/{storeId}/dibs")
-    public ResponseEntity<MessageResponse> deleteDibs(@PathVariable Long dibsId,
+    public ResponseEntity<MessageResponse> deleteDibs(@PathVariable Long storeId,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        return ResponseEntity.ok(dibsService.deleteDibs(dibsId, userDetails.getUser()));
+        return ResponseEntity.ok(dibsService.deleteDibs(storeId, userDetails.getUser()));
 
     }
 
