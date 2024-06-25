@@ -1,4 +1,4 @@
-package com.sparta.legendofdelivery.service;
+package com.sparta.legendofdelivery.domain.store.service;
 
 import com.sparta.legendofdelivery.domain.store.dto.StoreRequestDto;
 import com.sparta.legendofdelivery.domain.store.entity.Category;

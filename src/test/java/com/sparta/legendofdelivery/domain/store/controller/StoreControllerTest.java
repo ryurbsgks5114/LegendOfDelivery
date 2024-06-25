@@ -1,4 +1,4 @@
-package com.sparta.legendofdelivery.controller;
+package com.sparta.legendofdelivery.domain.store.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.legendofdelivery.MockSpringSecurityFilter;
