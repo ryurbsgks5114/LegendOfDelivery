@@ -10,7 +10,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public long countLikeByReviewId(Long reviewId) {
+    public Long countLikeByReviewId(Long reviewId) {
 
         QLike qLike = QLike.like;
 
