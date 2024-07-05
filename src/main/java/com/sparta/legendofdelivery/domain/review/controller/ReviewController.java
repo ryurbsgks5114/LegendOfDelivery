@@ -7,6 +7,7 @@ import com.sparta.legendofdelivery.global.dto.DataResponse;
 import com.sparta.legendofdelivery.global.dto.MessageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +53,15 @@ public class ReviewController {
 
     return ResponseEntity.ok(reviewService.updateReview(reviewId, requestDto));
 
+  }
+
+  @GetMapping("/{reviewId}")
+  public ResponseEntity<DataResponse<ReviewLikeResponseDto>> getReview(@PathVariable Long reviewId) {
+
+    ReviewLikeResponseDto responseDto =  reviewService.getReview(reviewId);
+    DataResponse<ReviewLikeResponseDto> response = new DataResponse<>(200, "리뷰 조회에 성공했습니다.", responseDto);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
 }

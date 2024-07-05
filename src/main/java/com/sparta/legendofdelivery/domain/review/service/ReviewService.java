@@ -121,4 +121,19 @@ public class ReviewService {
       throw new UnauthorizedException(DELETE_REVIEW_PERMISSION_DENIED.getMessage());
     }
   }
+
+  public ReviewLikeResponseDto getReview(Long reviewId) {
+
+    Review review = findByReviewId(reviewId);
+
+    ReviewLikeResponseDto responseDto = ReviewLikeResponseDto.builder()
+            .content(review.getContent())
+            .likeCount(reviewRepository.countLikeByReviewId(reviewId))
+            .createAt(review.getCreateAt())
+            .modifiedAt(review.getModifiedAt())
+            .build();
+
+    return responseDto;
+  }
+
 }
